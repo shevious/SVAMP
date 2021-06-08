@@ -770,6 +770,7 @@ def main():
 				if equ_ac:
 					equation_ac += 1
 				eval_total += 1
+				test_res_scores.append(cur_result)
 
 				with open(config.outputs_path + '/outputs.txt', 'a') as f_out:
 					f_out.write('Example: ' + str(ex_num) + '\n')

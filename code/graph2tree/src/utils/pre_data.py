@@ -258,7 +258,8 @@ def transfer_num(train_ls, dev_ls, chall = False):  # transfer num into "NUM"
 			# nums = []
 			nums = d['Numbers'].split()
 			input_seq = []
-			seg = nltk.word_tokenize(d["Question"].strip())
+			#seg = nltk.word_tokenize(d["Question"].strip())
+			seg = (d["Question"].strip()).split(' ')
 			equation = d["Equation"].split()
 
 			numz = ['0','1','2','3','4','5','6','7','8','9']
@@ -296,7 +297,8 @@ def transfer_num(train_ls, dev_ls, chall = False):  # transfer num into "NUM"
 		nums = d['Numbers'].split()
 		input_seq = []
 		try:
-			seg = nltk.word_tokenize(d["Question"].strip())
+			#seg = nltk.word_tokenize(d["Question"].strip())
+		    seg = (d["Question"].strip()).split(' ')
 		except:
 			pdb.set_trace()
 		equation = d["Equation"].split()
@@ -889,7 +891,8 @@ def prepare_train_batch(pairs_to_batch, batch_size):
 			output_length.append(j)
 		input_lengths.append(input_length)
 		output_lengths.append(output_length)
-		input_len_max = input_length[0]
+		#input_len_max = input_length[0]
+		input_len_max = max(input_length)
 		output_len_max = max(output_length)
 		input_batch = []
 		output_batch = []

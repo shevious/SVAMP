@@ -1,13 +1,17 @@
 import torch.nn as nn
 import torch
 from transformers import BertModel, BertTokenizer, RobertaModel, RobertaTokenizer
+from transformers import AutoTokenizer, AutoModel
 import pdb
 
 class BertEncoder(nn.Module):
-	def __init__(self, bert_model = 'bert-base-uncased',device = 'cuda:0 ', freeze_bert = False):
+	def __init__(self, bert_model = 'beomi/KcELECTRA-base',device = 'cuda:0 ', freeze_bert = False):
 		super(BertEncoder, self).__init__()
-		self.bert_layer = BertModel.from_pretrained(bert_model)
-		self.bert_tokenizer = BertTokenizer.from_pretrained(bert_model)
+		#bert_model = 'bert-base-uncased'
+		bert_model = 'beomi/KcELECTRA-base'
+		self.bert_layer = AutoModel.from_pretrained(bert_model)
+		#self.bert_tokenizer = AutoTokenizer.from_pretrained(bert_model, additional_special_tokens=['NUM'])
+		self.bert_tokenizer = AutoTokenizer.from_pretrained(bert_model)
 		self.device = device
 		
 		if freeze_bert:
@@ -55,7 +59,9 @@ class BertEncoder(nn.Module):
 		token_ids, attn_masks, input_lengths, index_retrieve = self.bertify_input(sentences)
 
 		#Feed through bert
-		cont_reps, _ = self.bert_layer(token_ids, attention_mask = attn_masks)
+		#cont_reps, _ = self.bert_layer(token_ids, attention_mask = attn_masks)
+		res = self.bert_layer(token_ids, attention_mask = attn_masks)
+		cont_reps = res.last_hidden_state
 
 		return cont_reps, input_lengths, token_ids, index_retrieve
 
