@@ -263,7 +263,7 @@ def transfer_num(train_ls, dev_ls, chall = False):  # transfer num into "NUM"
 			equation = d["Equation"].split()
 
 			numz = ['0','1','2','3','4','5','6','7','8','9']
-			opz = ['+', '-', '*', '/']
+			opz = ['+', '-', '*', '/', '//']
 			idxs = []
 			for s in range(len(seg)):
 				if len(seg[s]) >= 7 and seg[s][:6] == "number" and seg[s][6] in numz:
@@ -304,7 +304,7 @@ def transfer_num(train_ls, dev_ls, chall = False):  # transfer num into "NUM"
 		equation = d["Equation"].split()
 
 		numz = ['0','1','2','3','4','5','6','7','8','9']
-		opz = ['+', '-', '*', '/']
+		opz = ['+', '-', '*', '/', '//']
 		idxs = []
 		for s in range(len(seg)):
 			if len(seg[s]) >= 7 and seg[s][:6] == "number" and seg[s][6] in numz:

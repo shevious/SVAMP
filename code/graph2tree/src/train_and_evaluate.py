@@ -47,11 +47,11 @@ def generate_rule_mask(decoder_input, nums_batch, word2index, batch_size, nums_s
 			res = []
 			if decoder_input[i] >= nums_start:
 				res += [word2index[")"], word2index["+"], word2index["-"],
-						word2index["/"], word2index["*"], word2index["EOS"]
+						word2index["/"], word2index["*"], word2index["//"], word2index["EOS"]
 						]
 			elif decoder_input[i] in generate_nums:
 				res += [word2index[")"], word2index["+"], word2index["-"],
-						word2index["/"], word2index["*"], word2index["EOS"]
+						word2index["/"], word2index["*"], word2index["//"], word2index["EOS"]
 						]
 			elif decoder_input[i] == word2index["EOS"] or decoder_input[i] == PAD_token:
 				res += [PAD_token]
@@ -60,9 +60,9 @@ def generate_rule_mask(decoder_input, nums_batch, word2index, batch_size, nums_s
 				  [word2index["("]] + generate_nums
 			elif decoder_input[i] == word2index[")"]:
 				res += [word2index[")"], word2index["+"], word2index["-"],
-						word2index["/"], word2index["*"], word2index["EOS"]
+						word2index["/"], word2index["*"], word2index["//"], word2index["EOS"]
 						]
-			elif decoder_input[i] in [word2index["+"], word2index["-"], word2index["/"], word2index["*"]]:
+			elif decoder_input[i] in [word2index["+"], word2index["-"], word2index["/"], word2index["*"], word2index["//"]]:
 				res += [_ for _ in range(nums_start, nums_start + nums_batch[i])] + [word2index["("]] + generate_nums
 			for j in res:
 				rule_mask[i, j] = 0
@@ -79,7 +79,7 @@ def generate_rule_mask(decoder_input, nums_batch, word2index, batch_size, nums_s
 			if decoder_input[i] >= nums_start or decoder_input[i] in generate_nums:
 				res += [word2index["]"], word2index[")"], word2index["+"],
 						word2index["-"], word2index["/"], word2index["^"],
-						word2index["*"], word2index["EOS"]
+						word2index["*"], word2index["//"], word2index["EOS"]
 						]
 			elif decoder_input[i] == word2index["EOS"] or decoder_input[i] == PAD_token:
 				res += [PAD_token]
@@ -89,12 +89,12 @@ def generate_rule_mask(decoder_input, nums_batch, word2index, batch_size, nums_s
 			elif decoder_input[i] == word2index[")"]:
 				res += [word2index["]"], word2index[")"], word2index["+"],
 						word2index["-"], word2index["/"], word2index["^"],
-						word2index["*"], word2index["EOS"]
+						word2index["*"], word2index["//"], word2index["EOS"]
 						]
 			elif decoder_input[i] == word2index["]"]:
-				res += [word2index["+"], word2index["*"], word2index["-"], word2index["/"], word2index["EOS"]]
+				res += [word2index["+"], word2index["*"], word2index["-"], word2index["/"], word2index["//"], word2index["EOS"]]
 			elif decoder_input[i] in [word2index["+"], word2index["-"], word2index["/"],
-									  word2index["*"], word2index["^"]]:
+									  word2index["*"], word2index["^"], word2index["//"], ]:
 				res += [_ for _ in range(nums_start, nums_start + nums_batch[i])] +\
 				  [word2index["["], word2index["("]] + generate_nums
 			for j in res:
@@ -109,7 +109,7 @@ def generate_pre_tree_seq_rule_mask(decoder_input, nums_batch, word2index, batch
 		if decoder_input[0] == word2index["SOS"]:
 			for i in range(batch_size):
 				res = [_ for _ in range(nums_start, nums_start + nums_batch[i])] + generate_nums + \
-					  [word2index["+"], word2index["-"], word2index["/"], word2index["*"]]
+					  [word2index["+"], word2index["-"], word2index["/"], word2index["*"], word2index["//"]]
 				for j in res:
 					rule_mask[i, j] = 0
 			return rule_mask
@@ -117,20 +117,20 @@ def generate_pre_tree_seq_rule_mask(decoder_input, nums_batch, word2index, batch
 			res = []
 			if decoder_input[i] >= nums_start or decoder_input[i] in generate_nums:
 				res += [_ for _ in range(nums_start, nums_start + nums_batch[i])] + generate_nums + \
-					   [word2index["+"], word2index["-"], word2index["/"], word2index["*"], word2index["EOS"]
+					   [word2index["+"], word2index["-"], word2index["/"], word2index["*"], word2index["//"], word2index["EOS"]
 						]
 			elif decoder_input[i] == word2index["EOS"] or decoder_input[i] == PAD_token:
 				res += [PAD_token]
-			elif decoder_input[i] in [word2index["+"], word2index["-"], word2index["/"], word2index["*"]]:
+			elif decoder_input[i] in [word2index["+"], word2index["-"], word2index["/"], word2index["*"], word2index["//"]]:
 				res += [_ for _ in range(nums_start, nums_start + nums_batch[i])] + generate_nums + \
-					   [word2index["+"], word2index["-"], word2index["/"], word2index["*"]]
+					   [word2index["+"], word2index["-"], word2index["/"], word2index["*"], word2index["//"]]
 			for j in res:
 				rule_mask[i, j] = 0
 	else:
 		if decoder_input[0] == word2index["SOS"]:
 			for i in range(batch_size):
 				res = [_ for _ in range(nums_start, nums_start + nums_batch[i])] + generate_nums + \
-					  [word2index["+"], word2index["-"], word2index["/"], word2index["*"], word2index["^"]]
+					  [word2index["+"], word2index["-"], word2index["/"], word2index["*"], word2index["^"], word2index["//"]]
 				for j in res:
 					rule_mask[i, j] = 0
 			return rule_mask
@@ -138,15 +138,15 @@ def generate_pre_tree_seq_rule_mask(decoder_input, nums_batch, word2index, batch
 			res = []
 			if decoder_input[i] >= nums_start or decoder_input[i] in generate_nums:
 				res += [_ for _ in range(nums_start, nums_start + nums_batch[i])] + generate_nums + \
-					   [word2index["+"], word2index["-"], word2index["/"], word2index["*"], word2index["EOS"],
+					   [word2index["+"], word2index["-"], word2index["/"], word2index["*"], word2index["//"], word2index["EOS"],
 						word2index["^"]
 						]
 			elif decoder_input[i] == word2index["EOS"] or decoder_input[i] == PAD_token:
 				res += [PAD_token]
 			elif decoder_input[i] in [word2index["+"], word2index["-"], word2index["/"], word2index["*"],
-									  word2index["^"]]:
+									  word2index["^"], word2index["//"]]:
 				res += [_ for _ in range(nums_start, nums_start + nums_batch[i])] + generate_nums + \
-					   [word2index["+"], word2index["-"], word2index["/"], word2index["*"], word2index["^"]]
+					   [word2index["+"], word2index["-"], word2index["/"], word2index["*"], word2index["^"], word2index["//"]]
 			for j in res:
 				rule_mask[i, j] = 0
 	return rule_mask
@@ -166,12 +166,12 @@ def generate_post_tree_seq_rule_mask(decoder_input, nums_batch, word2index, batc
 			res = []
 			if decoder_input[i] >= nums_start or decoder_input[i] in generate_nums:
 				res += [_ for _ in range(nums_start, nums_start + nums_batch[i])] + generate_nums + \
-					   [word2index["+"], word2index["-"], word2index["/"], word2index["*"]]
+					   [word2index["+"], word2index["-"], word2index["/"], word2index["*"], word2index["//"]]
 			elif decoder_input[i] == word2index["EOS"] or decoder_input[i] == PAD_token:
 				res += [PAD_token]
-			elif decoder_input[i] in [word2index["+"], word2index["-"], word2index["/"], word2index["*"]]:
+			elif decoder_input[i] in [word2index["+"], word2index["-"], word2index["/"], word2index["*"], word2index["//"]]:
 				res += [_ for _ in range(nums_start, nums_start + nums_batch[i])] + generate_nums +\
-					   [word2index["+"], word2index["-"], word2index["/"], word2index["*"], word2index["EOS"]
+					   [word2index["+"], word2index["-"], word2index["/"], word2index["*"], word2index["//"], word2index["EOS"]
 						]
 			for j in res:
 				rule_mask[i, j] = 0
@@ -186,14 +186,14 @@ def generate_post_tree_seq_rule_mask(decoder_input, nums_batch, word2index, batc
 			res = []
 			if decoder_input[i] >= nums_start or decoder_input[i] in generate_nums:
 				res += [_ for _ in range(nums_start, nums_start + nums_batch[i])] + generate_nums + \
-					   [word2index["+"], word2index["-"], word2index["/"], word2index["*"], word2index["^"]
+					   [word2index["+"], word2index["-"], word2index["/"], word2index["*"], word2index["^"], word2index["//"]
 						]
 			elif decoder_input[i] == word2index["EOS"] or decoder_input[i] == PAD_token:
 				res += [PAD_token]
 			elif decoder_input[i] in [word2index["+"], word2index["-"], word2index["/"], word2index["*"],
-									  word2index["^"]]:
+									  word2index["^"], word2index["//"]]:
 				res += [_ for _ in range(nums_start, nums_start + nums_batch[i])] + generate_nums + \
-					   [word2index["+"], word2index["-"], word2index["/"], word2index["*"], word2index["^"],
+					   [word2index["+"], word2index["-"], word2index["/"], word2index["*"], word2index["^"], word2index["//"],
 						word2index["EOS"]
 						]
 			for j in res:
