@@ -6,11 +6,13 @@ def build_parser():
 	# Data loading parameters
 	parser = argparse.ArgumentParser(description='Run Single sequence model')
 
-	parser.add_argument('-mode', type=str, default='train', choices=['train', 'test'], help='Modes: train, test')
+	parser.add_argument('-mode', type=str, default='infer', choices=['train', 'test', 'infer'], help='Modes: train, test, infer')
 
 	# Run Config
-	parser.add_argument('-run_name', type=str, default='debug', help='run name for logs')
-	parser.add_argument('-dataset', type=str, default='asdiv-a_fold0_final', help='Dataset')
+	#parser.add_argument('-run_name', type=str, default='debug', help='run name for logs')
+	parser.add_argument('-run_name', type=str, default='run_cv_mawps', help='run name for logs')
+	#parser.add_argument('-dataset', type=str, default='asdiv-a_fold0_final', help='Dataset')
+	parser.add_argument('-dataset', type=str, default='cv_mawps', help='Dataset')
 	parser.add_argument('-outputs', dest='outputs', action='store_true', help='Show full validation outputs')
 	parser.add_argument('-no-outputs', dest='outputs', action='store_false', help='Do not show full validation outputs')
 	parser.set_defaults(outputs=True)
@@ -23,7 +25,8 @@ def build_parser():
 	parser.add_argument('-trim_threshold', type=int, default=1, help='Remove words with frequency less than this from vocab')
 
 	# Device Configuration
-	parser.add_argument('-gpu', type=int, default=2, help='Specify the gpu to use')
+	#parser.add_argument('-gpu', type=int, default=2, help='Specify the gpu to use')
+	parser.add_argument('-gpu', type=int, default=0, help='Specify the gpu to use')
 	parser.add_argument('-seed', type=int, default=6174, help='Default seed to set')
 	parser.add_argument('-logging', type=int, default=1, help='Set to 0 if you do not require logging')
 	parser.add_argument('-ckpt', type=str, default='model', help='Checkpoint file name')
@@ -34,7 +37,8 @@ def build_parser():
 
 	# Model parameters
 	# parser.add_argument('-cell_type', type=str, default='gru', help='RNN cell for encoder, default: gru')
-	parser.add_argument('-embedding', type=str, default='roberta', choices=['bert', 'roberta', 'word2vec', 'random'], help='Embeddings')
+	#parser.add_argument('-embedding', type=str, default='roberta', choices=['bert', 'roberta', 'word2vec', 'random'], help='Embeddings')
+	parser.add_argument('-embedding', type=str, default='bert', choices=['bert', 'roberta', 'word2vec', 'random'], help='Embeddings')
 	parser.add_argument('-emb_name', type=str, default='roberta-base', choices=['bert-base-uncased', 'roberta-base'], help='Which pre-trained model')
 	parser.add_argument('-embedding_size', type=int, default=768, help='Embedding dimensions of inputs')
 	parser.add_argument('-emb_lr', type=float, default=1e-5, help='Larning rate to train embeddings')
@@ -46,11 +50,13 @@ def build_parser():
 	parser.add_argument('-cell_type', type=str, default='lstm', help='RNN cell for encoder and decoder, default: lstm')
 	parser.add_argument('-hidden_size', type=int, default=384, help='Number of hidden units in each layer')
 	parser.add_argument('-depth', type=int, default=2, help='Number of layers in each encoder')
-	parser.add_argument('-lr', type=float, default=1e-3, help='Learning rate')
+	#parser.add_argument('-lr', type=float, default=1e-3, help='Learning rate')
+	parser.add_argument('-lr', type=float, default=0.0008, help='Learning rate')
 	parser.add_argument('-batch_size', type=int, default=8, help='Batch size')
 	parser.add_argument('-weight_decay', type=float, default=1e-5, help='Weight Decay')
 	parser.add_argument('-beam_size', type=float, default=5, help='Beam Size')
-	parser.add_argument('-epochs', type=int, default=70, help='Maximum # of training epochs')	
+	#parser.add_argument('-epochs', type=int, default=70, help='Maximum # of training epochs')	
+	parser.add_argument('-epochs', type=int, default=50, help='Maximum # of training epochs')	
 	parser.add_argument('-dropout', type=float, default=0.5, help= 'Dropout probability for input/output/state units (0.0: no dropout)')
 	
 	# parser.add_argument('-max_length', type=int, default=100, help='Specify max decode steps: Max length string to output')
