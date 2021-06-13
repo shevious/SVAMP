@@ -1,0 +1,602 @@
+{
+    "1": {
+        "answer": 231,
+        "equation": "sumAn=0  \nfor i in range(11) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "2": {
+        "answer": 680,
+        "equation": "sumAn=0  \nfor i in range(8) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "3": {
+        "answer": 407836,
+        "equation": "sumAn=0  \nfor i in range(11) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "4": {
+        "answer": 289,
+        "equation": "sumAn=0  \nfor i in range(17) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "5": {
+        "answer": 1436,
+        "equation": "sumAn=0  \nfor i in range(8) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "6": {
+        "answer": 1296,
+        "equation": "sumAn=0  \nfor i in range(8) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "7": {
+        "answer": 403,
+        "equation": "sumAn=0  \nfor i in range(13) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "8": {
+        "answer": 952,
+        "equation": "sumAn=0  \nfor i in range(7) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "9": {
+        "answer": 62785,
+        "equation": "sumAn=0  \nfor i in range(10) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "10": {
+        "answer": 225,
+        "equation": "sumAn=0  \nfor i in range(15) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "11": {
+        "answer": 6331,
+        "equation": "sumAn=0  \nfor i in range(13) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "12": {
+        "answer": 4356,
+        "equation": "sumAn=0  \nfor i in range(11) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "13": {
+        "answer": 330,
+        "equation": "sumAn=0  \nfor i in range(15) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "14": {
+        "answer": 1436,
+        "equation": "sumAn=0  \nfor i in range(8) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "15": {
+        "answer": 19900,
+        "equation": "sumAn=0  \nfor i in range(10) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "16": {
+        "answer": 225,
+        "equation": "sumAn=0  \nfor i in range(15) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "17": {
+        "answer": 650,
+        "equation": "sumAn=0  \nfor i in range(12) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "18": {
+        "answer": 131880,
+        "equation": "sumAn=0  \nfor i in range(12) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "19": {
+        "answer": 425,
+        "equation": "sumAn=0  \nfor i in range(17) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "20": {
+        "answer": 1496,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "21": {
+        "answer": 583452,
+        "equation": "sumAn=0  \nfor i in range(12) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "22": {
+        "answer": 256,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "23": {
+        "answer": 2925,
+        "equation": "sumAn=0  \nfor i in range(13) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "24": {
+        "answer": 982576,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "25": {
+        "answer": 378,
+        "equation": "sumAn=0  \nfor i in range(14) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "26": {
+        "answer": 140,
+        "equation": "sumAn=0  \nfor i in range(7) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "27": {
+        "answer": 421525,
+        "equation": "sumAn=0  \nfor i in range(13) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "28": {
+        "answer": 144,
+        "equation": "sumAn=0  \nfor i in range(12) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "29": {
+        "answer": 3654,
+        "equation": "sumAn=0  \nfor i in range(14) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "30": {
+        "answer": 275185,
+        "equation": "sumAn=0  \nfor i in range(10) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "31": {
+        "answer": 540,
+        "equation": "sumAn=0  \nfor i in range(15) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "32": {
+        "answer": 2472,
+        "equation": "sumAn=0  \nfor i in range(8) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "33": {
+        "answer": 4356,
+        "equation": "sumAn=0  \nfor i in range(11) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "34": {
+        "answer": 64,
+        "equation": "sumAn=0  \nfor i in range(8) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "35": {
+        "answer": 20816,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "36": {
+        "answer": 143830,
+        "equation": "sumAn=0  \nfor i in range(10) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "37": {
+        "answer": 121,
+        "equation": "sumAn=0  \nfor i in range(11) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "38": {
+        "answer": 5456,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "39": {
+        "answer": 108928,
+        "equation": "sumAn=0  \nfor i in range(8) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "40": {
+        "answer": 231,
+        "equation": "sumAn=0  \nfor i in range(11) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "41": {
+        "answer": 969,
+        "equation": "sumAn=0  \nfor i in range(9) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "42": {
+        "answer": 421525,
+        "equation": "sumAn=0  \nfor i in range(13) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "43": {
+        "answer": 36,
+        "equation": "sumAn=0  \nfor i in range(8) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "44": {
+        "answer": 5456,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "45": {
+        "answer": 11025,
+        "equation": "sumAn=0  \nfor i in range(14) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "46": {
+        "answer": 325,
+        "equation": "sumAn=0  \nfor i in range(13) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "47": {
+        "answer": 32216,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "48": {
+        "answer": 1894816,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "49": {
+        "answer": 169,
+        "equation": "sumAn=0  \nfor i in range(13) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "50": {
+        "answer": 385,
+        "equation": "sumAn=0  \nfor i in range(10) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "51": {
+        "answer": 1455840,
+        "equation": "sumAn=0  \nfor i in range(15) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "52": {
+        "answer": 148,
+        "equation": "sumAn=0  \nfor i in range(8) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "53": {
+        "answer": 2845,
+        "equation": "sumAn=0  \nfor i in range(10) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "54": {
+        "answer": 755595,
+        "equation": "sumAn=0  \nfor i in range(15) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "55": {
+        "answer": 330,
+        "equation": "sumAn=0  \nfor i in range(15) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "56": {
+        "answer": 1771,
+        "equation": "sumAn=0  \nfor i in range(11) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "57": {
+        "answer": 570402,
+        "equation": "sumAn=0  \nfor i in range(14) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "58": {
+        "answer": 378,
+        "equation": "sumAn=0  \nfor i in range(14) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "59": {
+        "answer": 21399,
+        "equation": "sumAn=0  \nfor i in range(14) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "60": {
+        "answer": 57240,
+        "equation": "sumAn=0  \nfor i in range(8) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "61": {
+        "answer": 540,
+        "equation": "sumAn=0  \nfor i in range(15) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "62": {
+        "answer": 680,
+        "equation": "sumAn=0  \nfor i in range(8) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "63": {
+        "answer": 92576,
+        "equation": "sumAn=0  \nfor i in range(11) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "64": {
+        "answer": 117,
+        "equation": "sumAn=0  \nfor i in range(9) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "65": {
+        "answer": 4930,
+        "equation": "sumAn=0  \nfor i in range(10) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "66": {
+        "answer": 8128,
+        "equation": "sumAn=0  \nfor i in range(8) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "67": {
+        "answer": 196,
+        "equation": "sumAn=0  \nfor i in range(14) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "68": {
+        "answer": 680,
+        "equation": "sumAn=0  \nfor i in range(8) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "69": {
+        "answer": 18496,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "70": {
+        "answer": 81,
+        "equation": "sumAn=0  \nfor i in range(9) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "71": {
+        "answer": 4962,
+        "equation": "sumAn=0  \nfor i in range(12) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "72": {
+        "answer": 421525,
+        "equation": "sumAn=0  \nfor i in range(13) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "73": {
+        "answer": 136,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "74": {
+        "answer": 9780,
+        "equation": "sumAn=0  \nfor i in range(15) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "75": {
+        "answer": 62785,
+        "equation": "sumAn=0  \nfor i in range(10) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "76": {
+        "answer": 697,
+        "equation": "sumAn=0  \nfor i in range(17) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "77": {
+        "answer": 204,
+        "equation": "sumAn=0  \nfor i in range(8) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "78": {
+        "answer": 101025,
+        "equation": "sumAn=0  \nfor i in range(15) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "79": {
+        "answer": 117,
+        "equation": "sumAn=0  \nfor i in range(9) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "80": {
+        "answer": 20816,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "81": {
+        "answer": 14560,
+        "equation": "sumAn=0  \nfor i in range(7) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "82": {
+        "answer": 190,
+        "equation": "sumAn=0  \nfor i in range(10) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "83": {
+        "answer": 4962,
+        "equation": "sumAn=0  \nfor i in range(12) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "84": {
+        "answer": 6084,
+        "equation": "sumAn=0  \nfor i in range(12) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "85": {
+        "answer": 256,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "86": {
+        "answer": 204,
+        "equation": "sumAn=0  \nfor i in range(8) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "87": {
+        "answer": 14400,
+        "equation": "sumAn=0  \nfor i in range(15) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "88": {
+        "answer": 225,
+        "equation": "sumAn=0  \nfor i in range(15) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "89": {
+        "answer": 285,
+        "equation": "sumAn=0  \nfor i in range(9) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "90": {
+        "answer": 4356,
+        "equation": "sumAn=0  \nfor i in range(11) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "91": {
+        "answer": 376,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "92": {
+        "answer": 4962,
+        "equation": "sumAn=0  \nfor i in range(12) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "93": {
+        "answer": 57240,
+        "equation": "sumAn=0  \nfor i in range(8) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "94": {
+        "answer": 121,
+        "equation": "sumAn=0  \nfor i in range(11) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "95": {
+        "answer": 9780,
+        "equation": "sumAn=0  \nfor i in range(15) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "96": {
+        "answer": 19900,
+        "equation": "sumAn=0  \nfor i in range(10) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "97": {
+        "answer": 169,
+        "equation": "sumAn=0  \nfor i in range(13) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "98": {
+        "answer": 2061,
+        "equation": "sumAn=0  \nfor i in range(9) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "99": {
+        "answer": 108928,
+        "equation": "sumAn=0  \nfor i in range(8) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "100": {
+        "answer": 256,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "101": {
+        "answer": 1015,
+        "equation": "sumAn=0  \nfor i in range(14) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "102": {
+        "answer": 570402,
+        "equation": "sumAn=0  \nfor i in range(14) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "103": {
+        "answer": 469,
+        "equation": "sumAn=0  \nfor i in range(14) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "104": {
+        "answer": 952,
+        "equation": "sumAn=0  \nfor i in range(7) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "105": {
+        "answer": 212751,
+        "equation": "sumAn=0  \nfor i in range(11) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "106": {
+        "answer": 256,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "107": {
+        "answer": 7931,
+        "equation": "sumAn=0  \nfor i in range(14) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "108": {
+        "answer": 25208,
+        "equation": "sumAn=0  \nfor i in range(8) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "109": {
+        "answer": 496,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "110": {
+        "answer": 204,
+        "equation": "sumAn=0  \nfor i in range(8) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "111": {
+        "answer": 19900,
+        "equation": "sumAn=0  \nfor i in range(10) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "112": {
+        "answer": 81,
+        "equation": "sumAn=0  \nfor i in range(9) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "113": {
+        "answer": 1771,
+        "equation": "sumAn=0  \nfor i in range(11) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "114": {
+        "answer": 755595,
+        "equation": "sumAn=0  \nfor i in range(15) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "115": {
+        "answer": 153,
+        "equation": "sumAn=0  \nfor i in range(9) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "116": {
+        "answer": 3654,
+        "equation": "sumAn=0  \nfor i in range(14) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "117": {
+        "answer": 13041,
+        "equation": "sumAn=0  \nfor i in range(9) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "118": {
+        "answer": 136,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "119": {
+        "answer": 952,
+        "equation": "sumAn=0  \nfor i in range(7) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "120": {
+        "answer": 212751,
+        "equation": "sumAn=0  \nfor i in range(11) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "121": {
+        "answer": 112,
+        "equation": "sumAn=0  \nfor i in range(7) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "122": {
+        "answer": 17095,
+        "equation": "sumAn=0  \nfor i in range(15) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "123": {
+        "answer": 2025,
+        "equation": "sumAn=0  \nfor i in range(9) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "124": {
+        "answer": 231,
+        "equation": "sumAn=0  \nfor i in range(11) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "125": {
+        "answer": 11896,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "126": {
+        "answer": 4356,
+        "equation": "sumAn=0  \nfor i in range(11) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "127": {
+        "answer": 425,
+        "equation": "sumAn=0  \nfor i in range(17) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "128": {
+        "answer": 969,
+        "equation": "sumAn=0  \nfor i in range(9) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "129": {
+        "answer": 407836,
+        "equation": "sumAn=0  \nfor i in range(11) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "130": {
+        "answer": 91,
+        "equation": "sumAn=0  \nfor i in range(7) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "131": {
+        "answer": 2061,
+        "equation": "sumAn=0  \nfor i in range(9) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "132": {
+        "answer": 2025,
+        "equation": "sumAn=0  \nfor i in range(9) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "133": {
+        "answer": 121,
+        "equation": "sumAn=0  \nfor i in range(11) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "134": {
+        "answer": 2472,
+        "equation": "sumAn=0  \nfor i in range(8) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "135": {
+        "answer": 29161,
+        "equation": "sumAn=0  \nfor i in range(11) : \n    an =( 1+i*2 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "136": {
+        "answer": 120,
+        "equation": "sumAn=0  \nfor i in range(15) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "137": {
+        "answer": 2845,
+        "equation": "sumAn=0  \nfor i in range(10) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "138": {
+        "answer": 3025,
+        "equation": "sumAn=0  \nfor i in range(10) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "139": {
+        "answer": 247,
+        "equation": "sumAn=0  \nfor i in range(13) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "140": {
+        "answer": 1015,
+        "equation": "sumAn=0  \nfor i in range(14) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "141": {
+        "answer": 982576,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "142": {
+        "answer": 616,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "143": {
+        "answer": 14297,
+        "equation": "sumAn=0  \nfor i in range(17) : \n    an =( 1+i*3 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "144": {
+        "answer": 18496,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "145": {
+        "answer": 403,
+        "equation": "sumAn=0  \nfor i in range(13) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "146": {
+        "answer": 1496,
+        "equation": "sumAn=0  \nfor i in range(16) : \n    an =( 1+i*1 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "147": {
+        "answer": 275185,
+        "equation": "sumAn=0  \nfor i in range(10) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    },
+    "148": {
+        "answer": 235,
+        "equation": "sumAn=0  \nfor i in range(10) : \n    an =( 1+i*5 )  \n    sumAn += math.pow( an, 1 ) \nprint(round(sumAn)) \n"
+    },
+    "149": {
+        "answer": 17095,
+        "equation": "sumAn=0  \nfor i in range(15) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 2 ) \nprint(round(sumAn)) \n"
+    },
+    "150": {
+        "answer": 755595,
+        "equation": "sumAn=0  \nfor i in range(15) : \n    an =( 1+i*4 )  \n    sumAn += math.pow( an, 3 ) \nprint(round(sumAn)) \n"
+    }
+}
