@@ -304,10 +304,10 @@ def main():
 							tgt_nums = 0
 							pred_nums = 0
 							for k_tgt in sentence_from_indexes(output_lang, test_batch[2]):
-								if k_tgt not in ['+', '-', '*', '/', '//']:
+								if k_tgt not in ['+', '-', '*', '/', '//', '%', 'P', 'C', 'H']:
 									tgt_nums += 1
 							for k_pred in sentence_from_indexes(output_lang, test_res):
-								if k_pred not in ['+', '-', '*', '/', '//']:
+								if k_pred not in ['+', '-', '*', '/', '//', '%', 'P', 'C', 'H']:
 									pred_nums += 1
 							f_out.write('Numbers in question: ' + str(src_nums) + '\n')
 							f_out.write('Numbers in Target Equation: ' + str(tgt_nums) + '\n')
@@ -622,10 +622,10 @@ def main():
 							tgt_nums = 0
 							pred_nums = 0
 							for k_tgt in sentence_from_indexes(output_lang, test_batch[2]):
-								if k_tgt not in ['+', '-', '*', '/', '//']:
+								if k_tgt not in ['+', '-', '*', '/', '//', '%', 'P', 'C', 'H']:
 									tgt_nums += 1
 							for k_pred in sentence_from_indexes(output_lang, test_res):
-								if k_pred not in ['+', '-', '*', '/', '//']:
+								if k_pred not in ['+', '-', '*', '/', '//', '%', 'P', 'C', 'H']:
 									pred_nums += 1
 							f_out.write('Numbers in question: ' + str(src_nums) + '\n')
 							f_out.write('Numbers in Target Equation: ' + str(tgt_nums) + '\n')
@@ -782,10 +782,10 @@ def main():
 						tgt_nums = 0
 						pred_nums = 0
 						for k_tgt in sentence_from_indexes(output_lang, test_batch[2]):
-							if k_tgt not in ['+', '-', '*', '/', '//']:
+							if k_tgt not in ['+', '-', '*', '/', '//', '%', 'P', 'C', 'H']:
 								tgt_nums += 1
 						for k_pred in sentence_from_indexes(output_lang, test_res):
-							if k_pred not in ['+', '-', '*', '/', '//']:
+							if k_pred not in ['+', '-', '*', '/', '//', '%', 'P', 'C', 'H']:
 								pred_nums += 1
 						f_out.write('Numbers in question: ' + str(src_nums) + '\n')
 						f_out.write('Numbers in Target Equation: ' + str(tgt_nums) + '\n')

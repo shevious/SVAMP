@@ -19,7 +19,7 @@ def construct_exp_tree(postfix):
     for char in postfix:
 
         # if operand, simply push into stack
-        if char not in ["+", "-", "*", "/", "^", "//"]:
+        if char not in ["+", "-", "*", "/", "^", "//", "%", "P", "C", "H"]:
             t = Et(char)
             stack.append(t)
         # Operator
@@ -43,7 +43,7 @@ def construct_exp_tree(postfix):
 def from_infix_to_postfix(expression):
     st = list()
     res = list()
-    priority = {"+": 0, "-": 0, "*": 1, "/": 1, "^": 2, "//": 1}
+    priority = {"+": 0, "-": 0, "*": 1, "/": 1, "^": 2, "//": 1, "%": 1, "P":2, "C":2, "H":2}
     for e in expression:
         if e in ["(", "["]:
             st.append(e)
@@ -71,7 +71,7 @@ def from_infix_to_postfix(expression):
 def from_infix_to_prefix(expression):
     st = list()
     res = list()
-    priority = {"+": 0, "-": 0, "*": 1, "/": 1, "^": 2, "//": 1}
+    priority = {"+": 0, "-": 0, "*": 1, "/": 1, "^": 2, "//": 1, "%": 1, "P":2, "C":2, "H":2}
     expression = deepcopy(expression)
     expression.reverse()
     for e in expression:
@@ -119,10 +119,23 @@ def out_expression_list(test, output_lang, num_list, num_stack=None):
             res.append(c)
     return res
 
+import math
+
+def P(a, b):
+    try: 
+        return math.factorial(a)//math.factorial(a-b)
+    except:
+        return None
+
+def C(a, b):
+    return P(a, b)//math.factorial(b)
+
+def H(a, b):
+    return C(a+b-1, b)
 
 def compute_postfix_expression(post_fix):
     st = list()
-    operators = ["+", "-", "^", "*", "/", "//"]
+    operators = ["+", "-", "^", "*", "/", "//", "%", "P", "C", "H"]
     for p in post_fix:
         if p not in operators:
             pos = re.search("\d+\(", p)
@@ -162,6 +175,22 @@ def compute_postfix_expression(post_fix):
             a = st.pop()
             b = st.pop()
             st.append(a // b)
+        elif p == "%" and len(st) > 1:
+            a = st.pop()
+            b = st.pop()
+            st.append(a % b)
+        elif p == "P" and len(st) > 1:
+            a = st.pop()
+            b = st.pop()
+            st.append(P(a, b))
+        elif p == "C" and len(st) > 1:
+            a = st.pop()
+            b = st.pop()
+            st.append(C(a, b))
+        elif p == "H" and len(st) > 1:
+            a = st.pop()
+            b = st.pop()
+            st.append(H(a, b))
         else:
             return None
     if len(st) == 1:
@@ -171,7 +200,7 @@ def compute_postfix_expression(post_fix):
 
 def compute_prefix_expression(pre_fix):
     st = list()
-    operators = ["+", "-", "^", "*", "/", "//"]
+    operators = ["+", "-", "^", "*", "/", "//", "%", "P", "C", "H"]
     pre_fix = deepcopy(pre_fix)
     pre_fix.reverse()
     for p in pre_fix:
@@ -215,9 +244,26 @@ def compute_prefix_expression(pre_fix):
             a = st.pop()
             b = st.pop()
             st.append(a // b)
+        elif p == "%" and len(st) > 1:
+            a = st.pop()
+            b = st.pop()
+            st.append(a % b)
+        elif p == "P" and len(st) > 1:
+            a = st.pop()
+            b = st.pop()
+            st.append(P(a, b))
+        elif p == "C" and len(st) > 1:
+            a = st.pop()
+            b = st.pop()
+            st.append(C(a, b))
+        elif p == "H" and len(st) > 1:
+            a = st.pop()
+            b = st.pop()
+            st.append(H(a, b))
         else:
             return None
     if len(st) == 1:
         return st.pop()
     return None
+
 
