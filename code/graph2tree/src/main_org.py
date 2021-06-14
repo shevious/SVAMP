@@ -19,6 +19,7 @@ from src.components.contextual_embeddings import *
 from src.utils.helper import *
 from src.utils.logger import *
 from src.utils.expressions_transfer import *
+from src.prepare_infer import load_infer_data
 
 global log_folder
 global model_folder
@@ -423,6 +424,7 @@ def main():
 		logger.info('Loading Data...')
 
 		train_ls, dev_ls = load_raw_data(data_path, config.dataset, is_train)
+		infer_ls = load_infer_data('/home/agc2021/dataset/problemsheet.json')
 
 		pairs_trained, pairs_tested, generate_nums, copy_nums = transfer_num(train_ls, dev_ls, config.challenge_disp)
 
