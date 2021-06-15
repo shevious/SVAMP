@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN rm -rf /var/lib/apt/lists/* && sed -i 's/kr.archive.ubuntu.com/ftp.daum.net/g' /etc/apt/sources.list && sed -i 's/archive.ubuntu.com/ftp.daum.net/g' /etc/apt/sources.list && sed -i 's/security.ubuntu.com/ftp.daum.net/g' /etc/apt/sources.list && sed -i 's/extras.ubuntu.com/ftp.daum.net/g' /etc/apt/sources.list && sed -i 's/mirror.kakao.com/ftp.daum.net/g' /etc/apt/sources.list
 
 ### Install Default Package. and Configure Locale, TimeZone###
-RUN apt-get update &&  apt-get install -y --no-install-recommends apt-utils locales tzdata make build-essential wget curl tar unzip gcc g++ git zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev libssl-dev && locale-gen ko_KR.UTF-8
+RUN apt-get update &&  apt-get install -y --no-install-recommends apt-utils locales tzdata make build-essential wget curl tar unzip gcc g++ git zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev libffi-dev openjdk-8-jdk libssl-dev && locale-gen ko_KR.UTF-8
 ENV LC_ALL=ko_KR.UTF-8
 ENV TZ=Asia/Seoul
 
@@ -19,7 +19,7 @@ ENV HOME=/home/${USER}
 RUN adduser --disabled-password --gecos "Default user" --uid ${UID} ${USER}
 
 ### Install Python with pyenv ###
-ARG PYTHON_VER=3.7.7
+ARG PYTHON_VER=3.8.3
 ENV PYENV_ROOT=${HOME}/.pyenv
 ENV PATH=$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 ENV PATH=$PYENV_ROOT/versions/${PYTHON_VER}/bin:$PATH
@@ -37,7 +37,7 @@ ARG DISABLE_CACHE=None
 # ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ #
 
 ### 사용자 공간
-RUN python3 -m pip install torch==1.8.1 torchtext==0.9.1 torchvision==0.9.1 && python3 -m pip install transformers==4.6.1 && python3 -c "from transformers import AutoTokenizer; AutoTokenizer.from_pretrained('beomi/KcELECTRA-base')" && python3 -c "from transformers import AutoModel; AutoModel.from_pretrained('beomi/KcELECTRA-base')"
+RUN python3 -m pip install torch==1.9.0.dev20210526+cu111 torchtext==0.10.0.dev20210526 torchvision==0.10.0.dev20210526+cu111 -f "https://download.pytorch.org/whl/nightly/cu111/torch_nightly.html" && python3 -m pip install transformers==4.6.1 && python3 -c "from transformers import AutoTokenizer; AutoTokenizer.from_pretrained('beomi/KcELECTRA-base')" && python3 -c "from transformers import AutoModel; AutoModel.from_pretrained('beomi/KcELECTRA-base')"
 
 ### ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ ###
 # Do not modify the code below.               
@@ -49,6 +49,8 @@ RUN python3 -m pip install torch==1.8.1 torchtext==0.9.1 torchvision==0.9.1 && p
 # 저희는 책임지지 않습니다.                      
 # ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ #
 RUN chown -R ${USER}:${USER} ${PYENV_ROOT}/ && chown -R ${USER}:${USER} ${HOME}/
+RUN mkdir -p /home/agc2021/
+RUN chown -R ${USER}:${USER} /home/agc2021/
 COPY --chown=${USER}:${USER} . ${HOME}/
 USER ${USER}
 
