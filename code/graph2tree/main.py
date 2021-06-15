@@ -19,7 +19,7 @@ from src.components.contextual_embeddings import *
 from src.utils.helper import *
 from src.utils.logger import *
 from src.utils.expressions_transfer import *
-from src.prepare_infer_data import load_infer_data
+from src.prepare_infer import load_infer_data, convert_eq
 
 global log_folder
 global model_folder
@@ -76,7 +76,6 @@ def main():
 		is_train = True
 	else:
 		is_train = False
-
 	if config.mode == 'infer':
 		is_infer = True
 	else:
@@ -434,6 +433,8 @@ def main():
 			infer_ls  = load_infer_data('/home/agc2021/dataset/problemsheet.json')
 
 		pairs_trained, pairs_tested, generate_nums, copy_nums = transfer_num(train_ls, dev_ls, config.challenge_disp)
+		if is_infer:
+			pairs_inferred, generate_nums, copy_nums = transfer_num_infer(infer_ls, config.challenge_disp)
 
 		logger.debug('Data Loaded...')
 		if is_train:
@@ -456,7 +457,15 @@ def main():
 
 			logger.info('Vocab Files loaded from {}\nNumber of Words: {}'.format(vocab1_path, input_lang.n_words))
 
-		input_lang, output_lang, train_pairs, test_pairs = prepare_data(config, logger, pairs_trained, pairs_tested, config.trim_threshold, generate_nums, copy_nums, input_lang, output_lang, tree=True)
+		if is_infer:
+			input_lang, output_lang, train_pairs, infer_pairs = prepare_data(config, logger, pairs_trained, pairs_inferred,
+																			config.trim_threshold, generate_nums,
+																			copy_nums, input_lang, output_lang,
+																			tree=True)
+			test_pairs = []
+		else:
+			input_lang, output_lang, train_pairs, test_pairs = prepare_data(config, logger, pairs_trained, pairs_tested, config.trim_threshold, generate_nums, copy_nums, input_lang, output_lang, tree=True)
+			infer_pairs = []
 
 		checkpoint = get_latest_checkpoint(config.model_path, logger)
 
@@ -601,7 +610,6 @@ def main():
 					f_out.write('---------------------------------------\n')
 					f_out.close()
 
-				ex_num = 0
 				for test_batch in test_pairs:
 					batch_graph = get_single_example_graph(test_batch[0], test_batch[1], test_batch[7], test_batch[4], test_batch[5])
 					test_res = evaluate_tree(config, test_batch[0], test_batch[1], generate_num_ids, embedding, encoder, predict, generate,
@@ -763,6 +771,28 @@ def main():
 				f_out.write('---------------------------------------\n')
 				f_out.close()
 
+			answers = {}
+			for i, test_batch in enumerate(infer_pairs):
+				batch_graph = get_single_example_graph(test_batch[0], test_batch[1], test_batch[7], test_batch[4],
+													   test_batch[5])
+				test_res = evaluate_tree(config, test_batch[0], test_batch[1], generate_num_ids, embedding, encoder,
+										 predict, generate,
+										 merge, input_lang, output_lang, test_batch[4], test_batch[5], batch_graph,
+										 test_batch[7], beam_size=config.beam_size)
+				val, equ = compute_prefix_tree_result_infer(test_res, output_lang, test_batch[4])
+				print(' '.join([input_lang.index2word[i] for i in test_batch[0]]))
+				print(val, equ)
+				ans, py_eq = convert_eq(val, equ)
+				answers[infer_ls[i]['id']] = {
+					"answer": ans,
+					"equation": py_eq
+				}
+
+			import json
+			json_path = 'answersheet.json'
+			with open(json_path, 'w', encoding='UTF-8') as fout:
+				json.dump(answers, fout, ensure_ascii=False, indent=4)
+
 			test_res_ques, test_res_act, test_res_gen, test_res_scores = [], [], [], []
 
 			ex_num = 0
@@ -808,7 +838,8 @@ def main():
 			results_df.columns = ['Question', 'Actual Equation', 'Generated Equation', 'Score']
 			csv_file_path = os.path.join(config.outputs_path, config.dataset+'.csv')
 			results_df.to_csv(csv_file_path, index = False)
-			logger.info('Accuracy: {}'.format(sum(test_res_scores)/len(test_res_scores)))
+			if not is_infer:
+				logger.info('Accuracy: {}'.format(sum(test_res_scores)/len(test_res_scores)))
 
 
 if __name__ == '__main__':

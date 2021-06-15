@@ -316,6 +316,21 @@ def compute_prefix_tree_result(test_res, test_tar, output_lang, num_list, num_st
 	except:
 		return False, False, test, tar
 
+def compute_prefix_tree_result_infer(test_res, output_lang, num_list):
+	# print(test_res, test_tar)
+	num_stack = []
+	max_index = output_lang.n_words
+	for idx in test_res:
+		if idx >= max_index - 1:
+			num_start = output_lang.word2index['N0']
+			num_end = output_lang.n_words-1
+			if idx-num_start < len(num_list):
+				num_stack.append([idx-num_start])
+			else: # unknown operator???
+				num_stack.append([1]) # '+'
+	num_stack.reverse()
+	test = out_expression_list(test_res, output_lang, num_list, num_stack)
+	return compute_prefix_expression(test), test
 
 def compute_postfix_tree_result(test_res, test_tar, output_lang, num_list, num_stack):
 	# print(test_res, test_tar)

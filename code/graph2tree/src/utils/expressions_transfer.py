@@ -128,7 +128,10 @@ def P(a, b):
         return None
 
 def C(a, b):
-    return P(a, b)//math.factorial(b)
+    try:
+        return P(a, b)//math.factorial(b)
+    except:
+        return None
 
 def H(a, b):
     return C(a+b-1, b)

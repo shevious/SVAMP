@@ -339,6 +339,56 @@ def transfer_num(train_ls, dev_ls, chall = False):  # transfer num into "NUM"
 			temp_g.append(g)
 	return train_pairs, dev_pairs, temp_g, copy_nums
 
+def transfer_num_infer(infer_ls, chall = False):  # transfer num into "NUM"
+	print("Transfer numbers...")
+	infer_pairs = []
+	generate_nums = []
+	generate_nums_dict = {}
+	copy_nums = 0
+
+	for d in infer_ls:
+		# nums = []
+		nums = d['Numbers'].split()
+		input_seq = []
+		try:
+			#seg = nltk.word_tokenize(d["Question"].strip())
+			seg = (d["Question"].strip()).split(' ')
+		except:
+			pdb.set_trace()
+		#equation = d["Equation"].split()
+
+		numz = ['0','1','2','3','4','5','6','7','8','9']
+		opz = ['+', '-', '*', '/', '//', '%', 'P', 'C', 'H']
+		idxs = []
+		for s in range(len(seg)):
+			if len(seg[s]) >= 7 and seg[s][:6] == "number" and seg[s][6] in numz:
+				input_seq.append("NUM")
+				idxs.append(s)
+			else:
+				input_seq.append(seg[s])
+		if copy_nums < len(nums):
+			copy_nums = len(nums)
+
+		out_seq = []
+		if chall:
+			infer_pairs.append((input_seq, out_seq, nums, idxs, d['group_nums'], d['Type'], d['Variation Type'], d['Annotator'], d['Alternate']))
+		else:
+			infer_pairs.append((input_seq, out_seq, nums, idxs, d['group_nums']))
+
+	temp_g = []
+	for g in generate_nums_dict:
+		if generate_nums_dict[g] >= 5:
+			temp_g.append(g)
+	return infer_pairs, temp_g, copy_nums
+
+
+def transfer_english_num(data):  # transfer num into "NUM"
+	print("Transfer numbers...")
+	pattern = re.compile("\d+,\d+|\d+\.\d+|\d+")
+	pairs = []
+	generate_nums = {} # Unmentioned numbers used in eqns in atleast 5 examples
+	copy_nums = 0 # Maximum number of numbers in a single sentence
+
 
 def transfer_english_num(data):  # transfer num into "NUM"
 	print("Transfer numbers...")
