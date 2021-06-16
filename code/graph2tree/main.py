@@ -19,7 +19,7 @@ from src.components.contextual_embeddings import *
 from src.utils.helper import *
 from src.utils.logger import *
 from src.utils.expressions_transfer import *
-from src.prepare_infer import load_infer_data, convert_eq
+from src.prepare_infer import load_infer_data, convert_eq, solve_formula
 
 global log_folder
 global model_folder
@@ -780,13 +780,20 @@ def main():
 										 merge, input_lang, output_lang, test_batch[4], test_batch[5], batch_graph,
 										 test_batch[7], beam_size=config.beam_size)
 				val, equ = compute_prefix_tree_result_infer(test_res, output_lang, test_batch[4])
-				print(' '.join([input_lang.index2word[i] for i in test_batch[0]]))
-				print(val, equ)
+				#print(' '.join([input_lang.index2word[i] for i in test_batch[0]]))
+				#print(val, equ)
 				ans, py_eq = convert_eq(val, equ)
+				ans_f, py_eq_f = solve_formula(infer_ls[i]['Question_org'])
+				if ans_f is not None:
+					ans = ans_f
+					py_eq = py_eq_f
 				answers[infer_ls[i]['id']] = {
 					"answer": ans,
 					"equation": py_eq
 				}
+				print(infer_ls[i]['Question_org'])
+				print(ans)
+				print(py_eq)
 
 			import json
 			json_path = 'answersheet.json'

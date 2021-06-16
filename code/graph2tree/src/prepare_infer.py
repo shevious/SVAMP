@@ -145,3 +145,74 @@ def convert_eq(val, eq_list):
     eq += 'print(("%.2f"%'+calc_eq(eq_list)+').rstrip("0").rstrip("."))\n'
     ans = ('%.2f'%val).rstrip("0").rstrip(".")
     return ans, eq
+
+
+from sympy.solvers import solve
+from sympy import symbols
+
+
+def is_number(q):
+    if re.match(r'^[-+]?(\d*\.\d+|\d+)$', q) is None:
+        return False
+    else:
+        return True
+
+
+def solve_eqs(eqs, x):
+    var = symbols('A B C D E F G H I J K L M N O P Q R S T U V W X Y Z x')
+    new_eqs = []
+    for eq in eqs:
+        terms = eq.split('=')
+        for i in range(len(terms) - 1):
+            new_eqs.append('(' + terms[i] + ')-(' + terms[i + 1] + ')')
+    new_eqs.append('x-(' + x + ')')
+    print(new_eqs)
+    try:
+        sol = solve(new_eqs)
+        sol_dict = {}
+        print(sol)
+        for var in sol.keys():
+            sol_dict[str(var)] = str(sol[var])
+        for var in sol_dict.keys():
+            if not is_number(sol_dict[var]):
+                raise
+        if 'x' not in sol_dict.keys():
+            raise
+
+        ans = sol_dict['x']
+        equation = ''
+
+        for var in sol_dict.keys():
+            equation += var + '=' + sol_dict[var] + '\n'
+        equation += 'print(' + 'x' + ')\n'
+        return ans, equation
+    except:
+        return None, 'print(0)'
+
+
+def solve_pos(eqs, x):
+    var = symbols('A B C D E F G H I J K L M N O P Q R S T U V W X Y Z x')
+    return None, 'print(0)'
+
+
+def solve_formula(q):
+    match_list = re.findall(r'[A-Z\+\-=\/\*\(\)0-9]+', q)
+    eqs = []
+    x_list = []
+    for match in match_list:
+        if '=' in match:
+            eqs.append(match)
+        else:
+            x_list.append(match)
+    if len(eqs) == 0 or len(x_list) == 0:
+        return None, 'print(0)'
+    is_pos_problem = False
+    for eq in eqs:
+        pos_list = re.findall(r'(\d[A-Z]|[A-Z]\d)', q)
+        if len(pos_list) > 0:
+            is_pos_problem = True
+            break
+    if is_pos_problem:
+        return solve_pos(eqs, x_list[-1])
+    else:
+        return solve_eqs(eqs, x_list[-1])
