@@ -125,7 +125,7 @@ def calc_eq(eq_list):
     elif node == '//':
         return '(%s // %s)' % (n1, n2)
     elif node == '%':
-        return '(%s % %s)' % (n1, n2)
+        return '(%s %% %s)' % (n1, n2)
     elif node == 'P':
         return '(math.factorial(%s)/math.factorial(%s-%s))' % (n1, n1, n2)
     elif node == 'C':
@@ -142,13 +142,60 @@ def convert_eq(val, eq_list):
         return ans, py_eq
     #print(eq_list)
     eq = 'import math\n'
-    eq += 'print(("%.2f"%'+calc_eq(eq_list)+').rstrip("0").rstrip("."))\n'
-    ans = ('%.2f'%val).rstrip("0").rstrip(".")
+    eq += "print(('%.2f'%"+calc_eq(eq_list)+").rstrip('0').rstrip('.'))\n"
+    ans = ('%.2f'%val).rstrip('0').rstrip('.')
     return ans, eq
 
 
-from sympy.solvers import solve
-from sympy import symbols
+from sympy import symbols, sympify, linsolve, solve
+
+
+def eval_solution(concrete_solution):
+    concrete_solution_eval = list(map(lambda x: bool(x >= 0) and bool(x < 10) and int(x) == x, concrete_solution))
+    if sum(concrete_solution_eval) == len(concrete_solution):
+        return True
+
+    return False
+
+
+def enumerate_solutions(Sols):
+    if Sols.free_symbols == set():  # no free variables. see if all variables belong to {0,1}
+
+        concrete_solution = Sols.args[0]
+        if concrete_solution == set():  # no solutions
+            return []
+        if eval_solution(concrete_solution):
+            return [concrete_solution]
+        else:
+            return []
+    # create a list of tuples of free variables, one for each valid value
+    free_vars = []
+    for i in range(10 ** len(Sols.free_symbols)):
+        free_vars.append(tuple(Sols.free_symbols))
+
+    # generate values to substitute for free variables
+    # free_vals = [list(bin(i))[2:] for i in range(10**len(Sols.free_symbols))]
+    # free_vals = [tuple(map(int, list('0'*(len(Sols.free_symbols)-len(s)))+s )) for s in free_vals]
+    n = len(Sols.free_symbols)
+    free_vals = []
+    for i in range(10 ** n):
+        num_list = []
+        for j in range(n):
+            num_list.append((int)((i // 10 ** (n - 1 - j)) % 10))
+        free_vals.append(tuple(num_list))
+
+    # zip twice to generate lists of pairs of variable and value
+    free_zip = zip(free_vars, free_vals)
+    free_zip_fin = list([list(zip(x[0], x[1])) for x in free_zip])
+
+    correct_solutions = []
+
+    for substitution in free_zip_fin:
+        concrete_solution = list(map(lambda x: x.subs(substitution), Sols.args[0]))
+        if eval_solution(concrete_solution):
+            correct_solutions.append(concrete_solution)
+
+    return correct_solutions
 
 
 def is_number(q):
@@ -166,11 +213,11 @@ def solve_eqs(eqs, x):
         for i in range(len(terms) - 1):
             new_eqs.append('(' + terms[i] + ')-(' + terms[i + 1] + ')')
     new_eqs.append('x-(' + x + ')')
-    print(new_eqs)
+    # print(new_eqs)
     try:
         sol = solve(new_eqs)
         sol_dict = {}
-        print(sol)
+        # print(sol)
         for var in sol.keys():
             sol_dict[str(var)] = str(sol[var])
         for var in sol_dict.keys():
@@ -191,12 +238,79 @@ def solve_eqs(eqs, x):
 
 
 def solve_pos(eqs, x):
-    var = symbols('A B C D E F G H I J K L M N O P Q R S T U V W X Y Z x')
-    return None, 'print(0)'
+    var = symbols('A B C D E F G H I J K L M N O P Q R S T U V W X Y Z x', integer=True)
+    new_eqs = []
+    for eq in eqs:
+        terms = eq.split('=')
+        for i in range(len(terms) - 1):
+            new_eqs.append('(' + terms[i] + ')-(' + terms[i + 1] + ')')
+        # new_eqs.append('x-('+x+')')
+    exp_eqs = []
+    for eq in new_eqs:
+        match_list = re.findall(r'[A-Z0-9]+', eq)
+        for match in match_list:
+            if is_number(match):
+                continue
+            n = len(match)
+            new_eq = ''
+            for i, c in enumerate(match):
+                if i < n - 1:
+                    mul = '*1' + '0' * (n - 1 - i) + '+'
+                else:
+                    mul = ''
+                new_eq += c + mul
+            new_eq = '(' + new_eq + ')'
+            eq = eq.replace(match, new_eq, 1)
+        exp_eqs.append(eq)
+
+    symbol_list = []
+    for eq in exp_eqs:
+        match_list = re.findall(r'[A-Z]', eq)
+        for match in match_list:
+            if match not in symbol_list:
+                symbol_list.append(match)
+    # print(exp_eqs)
+    # if True:
+    try:
+        var_list = [sympify(s) for s in symbol_list]
+        res = linsolve(exp_eqs, var_list)
+        # print(res)
+        l = enumerate_solutions(res)
+        # print(l)
+        if len(l) == 0:
+            raise
+        sol = l[0]
+        fin_eqs = []
+        for i, s in enumerate(symbol_list):
+            fin_eqs.append('%s-%i' % (s, sol[i]))
+        fin_eqs.append('x-%s' % x)
+
+        sol = solve(fin_eqs)
+        sol_dict = {}
+        # print(sol)
+        for var in sol.keys():
+            sol_dict[str(var)] = str(sol[var])
+        for var in sol_dict.keys():
+            if not is_number(sol_dict[var]):
+                raise
+        if 'x' not in sol_dict.keys():
+            raise
+
+        ans = sol_dict['x']
+        equation = ''
+
+        for var in sol_dict.keys():
+            equation += var + '=' + sol_dict[var] + '\n'
+        equation += 'print(' + 'x' + ')\n'
+        return ans, equation
+
+    except:
+        return None, 'print(0)'
 
 
 def solve_formula(q):
     match_list = re.findall(r'[A-Z\+\-=\/\*\(\)0-9]+', q)
+    # print(match_list)
     eqs = []
     x_list = []
     for match in match_list:
@@ -208,7 +322,8 @@ def solve_formula(q):
         return None, 'print(0)'
     is_pos_problem = False
     for eq in eqs:
-        pos_list = re.findall(r'(\d[A-Z]|[A-Z]\d)', q)
+        pos_list = re.findall(r'(\d[A-Z]|[A-Z]\d|[A-Z][A-Z])', q)
+        # print(eq, pos_list)
         if len(pos_list) > 0:
             is_pos_problem = True
             break
