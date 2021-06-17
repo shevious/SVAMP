@@ -331,3 +331,179 @@ def solve_formula(q):
         return solve_pos(eqs, x_list[-1])
     else:
         return solve_eqs(eqs, x_list[-1])
+
+
+def rel_str(n, seq_n, seq_n_1, seq_type, rels):
+    rel = rels[seq_type]
+    rel = rel.replace('n', str(n))
+    rel = rel.replace('a_i', seq_n)
+    rel = rel.replace('a_j', seq_n_1)
+    return rel
+
+
+def parse_sol(sol, eq_symbol_list, seq_type):
+    if type(sol) is list:
+        if len(sol) == 0:
+            return None
+        sol = sol[0]
+    sol_dict = {}
+    if type(sol) is dict:
+        for key in sol.keys():
+            sol_dict[str(key)] = str(sol[key])
+            if not is_number(str(sol[key])):
+                return None
+    elif type(sol) is tuple:
+        for i, val in enumerate(sol):
+            sol_dict[eq_symbol_list[i]] = str(val)
+    sol_dict['seq_type'] = seq_type
+    return sol_dict
+
+
+def fun0(a, b, i, c):
+    return a + b * i + c
+
+
+def fun1(a, b, i, c):
+    return a * b + c
+
+
+def fun2(a, b, i, c):
+    return a + (i + b) ** 2 + c
+
+
+def calc_seq(sol_dict, n, n_id, seq_type, rels):
+    calc_str = [
+        'a+b*i+c',
+        'a*b+c',
+        'a+(i+b)**2+c'
+    ]
+
+    funs = [fun0, fun1, fun2]
+
+    b = int(sol_dict['b'])
+    c = int(sol_dict['c'])
+
+    a = int(sol_dict['a_0'])
+    for i in range(0, int(n) - 1):
+        a = funs[seq_type](a, b, i, c)
+    ans = a
+    py_eq = 'a = %s\n' % (sol_dict['a_0'])
+    py_eq += 'b = %s\n' % (sol_dict['b'])
+    py_eq += 'c = %s\n' % (sol_dict['c'])
+    py_eq += 'for i in range(0,%s-1):\n' % n
+    py_eq += '    a = %s\n' % calc_str[seq_type]
+    py_eq += '%s = a\n' % n_id
+    return ans, py_eq
+
+
+def create_ans(sol_dict, num_list, formula, var_list, seq_type, rels):
+    failed = (None, 'print(1)')
+    if formula is not None:
+        py_eq = "formula = '%s'\n" % rels[seq_type]
+        for var in sol_dict.keys():
+            if var == 'seq_type':
+                continue
+            if not is_number(sol_dict[var]):
+                return failed
+            if var == 'x':
+                py_eq += '%s = %s\n' % (var, formula)
+            else:
+                py_eq += '%s = %s\n' % (var, sol_dict[var])
+        py_eq += 'print(x)\n'
+        ans = sol_dict['x']
+        return ans, py_eq
+    ans1, py_eq1 = calc_seq(sol_dict, num_list[0], 'num1', seq_type, rels)
+    if len(num_list) == 1:
+        ans = ans1
+        py_eq = py_eq1 + 'print(num1)\n'
+        return ans, py_eq
+    ans2, py_eq2 = calc_seq(sol_dict, num_list[1], 'num2', seq_type, rels)
+    ans = ans2 - ans1
+    py_eq = py_eq1 + py_eq2
+    py_eq += 'print(num2-num1)\n'
+    return ans, py_eq
+
+
+def seq_proc(seq, num_list, var_list, formula):
+    failed = (None, 'print(0)')
+    var = symbols('A B C D E F G H I J K L M N O P Q R S T U V W X Y Z x', integer=True)
+    var = symbols('a_0 b c', integer=True)
+    rels = [
+        'a_i + b*n + c - a_j',  # a[n+1] = b*n + c + a[n]
+        'a_i*b + c - a_j',  # a[n+1] = b*a[n] + c
+        'a_i + (n+b)**2 + c - a_j',  # a[n+1] = (n+b)**2 + c + a[n]
+    ]
+    symbol_list = [
+        ['a_0', 'b', 'c'],
+        ['a_0', 'b', 'c'],
+        ['a_0', 'b', 'c'],
+    ]
+    n_seq_type = 3
+    n_seq = len(seq)
+    is_success = False
+    for seq_type in range(n_seq_type):
+        eqs = ['a_0 - (%s)' % seq[0]]
+        for n in range(n_seq - 1):
+            eqs.append(rel_str(n, seq[n], seq[n + 1], seq_type, rels))
+        eq_symbol_list = symbol_list[seq_type] + var_list
+        if formula is not None:
+            eqs.append('x - (%s)' % formula)
+            eq_symbol_list.append('x')
+        # print(eqs)
+        try:
+            sol = solve(eqs, eq_symbol_list)
+            sol_dict = parse_sol(sol, eq_symbol_list, seq_type)
+            # print(eqs)
+            # print('sol_dict')
+            # print(sol_dict)
+            if sol_dict is None:
+                continue
+            ans, py_eq = create_ans(sol_dict, num_list, formula, var_list, seq_type, rels)
+            if ans is None:
+                continue
+            # print(ans)
+            # print(py_eq)
+            is_success = True
+            return ans, py_eq
+        except:
+            continue
+
+    if not is_success:
+        return failed
+
+
+def solve_seq(q):
+    failed = (None, 'print(0)')
+    match_list = re.findall(r'((\d+|[A-Z]), (\d+|[A-Z]), (\d+|[A-Z]), (\d+|[A-Z])(, (\d+|[A-Z]))+)', q)
+    if len(match_list) == 0:
+        return failed
+    seq_str = match_list[0][0]
+    seq = seq_str.split(', ')
+    var_list = []
+    for a in seq:
+        if is_number(a):
+            continue
+        else:
+            match = re.fullmatch(r'[A-Z]', a)
+            if match is None:
+                return failed
+            if a not in var_list:
+                var_list.append(a)
+    pos = q.find(seq_str) + len(seq_str)
+    remained = q[pos:]
+    num_list = re.findall(r'\d+', remained)
+    formula_list = re.findall(r'[A-Z\-\+]+', remained)
+    if len(var_list) > 0:
+        if len(formula_list) == 0:
+            return failed
+        formula = formula_list[-1]
+    elif len(num_list) > 0:
+        num_list = num_list[-2:]
+        formula = None
+    else:
+        return failed
+    # try:
+    if True:
+        return seq_proc(seq, num_list, var_list, formula)
+    # except:
+    # return failed

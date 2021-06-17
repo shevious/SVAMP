@@ -19,7 +19,7 @@ from src.components.contextual_embeddings import *
 from src.utils.helper import *
 from src.utils.logger import *
 from src.utils.expressions_transfer import *
-from src.prepare_infer import load_infer_data, convert_eq, solve_formula
+from src.prepare_infer import load_infer_data, convert_eq, solve_formula, solve_seq
 
 global log_folder
 global model_folder
@@ -788,6 +788,10 @@ def main():
 				if ans_f is not None:
 					ans = ans_f
 					py_eq = py_eq_f
+				ans_s, py_eq_s = solve_seq(infer_ls[i]['Question_org'])
+				if ans_s is not None:
+					ans = ans_s
+					py_eq = py_eq_s
 				answers[infer_ls[i]['id']] = {
 					"answer": ans,
 					"equation": py_eq
