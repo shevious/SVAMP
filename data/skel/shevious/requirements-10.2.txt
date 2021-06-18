@@ -1,0 +1,10 @@
+torch==1.8.1
+torchtext==0.9.1
+torchvision==0.9.1
+transformers==4.6.1
+pandas==1.2.4
+attrdict==2.0.1
+nltk==3.4.5
+tensorboard==1.12.2
+tensorboardX==1.2
+gensim==3.8.0
