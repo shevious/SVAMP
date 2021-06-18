@@ -10,6 +10,7 @@ except ImportError:
 	import pickle
 import json
 import pdb
+import time
 
 from src.args import build_parser
 
@@ -19,7 +20,8 @@ from src.components.contextual_embeddings import *
 from src.utils.helper import *
 from src.utils.logger import *
 from src.utils.expressions_transfer import *
-from src.prepare_infer import load_infer_data, convert_eq, solve_formula, solve_seq
+from src.prepare_infer import load_infer_data, convert_eq, solve_formula, solve_seq, check_ans
+from src.prepare_infer import is_label_p, answer_label
 
 global log_folder
 global model_folder
@@ -774,29 +776,52 @@ def main():
 
 			answers = {}
 			for i, test_batch in enumerate(infer_pairs):
-				batch_graph = get_single_example_graph(test_batch[0], test_batch[1], test_batch[7], test_batch[4],
+				print(i+1, infer_ls[i]['Question_org'])
+				try:
+					batch_graph = get_single_example_graph(test_batch[0], test_batch[1], test_batch[7], test_batch[4],
 													   test_batch[5])
-				test_res = evaluate_tree(config, test_batch[0], test_batch[1], generate_num_ids, embedding, encoder,
+					test_res = evaluate_tree(config, test_batch[0], test_batch[1], generate_num_ids, embedding, encoder,
 										 predict, generate,
 										 merge, input_lang, output_lang, test_batch[4], test_batch[5], batch_graph,
 										 test_batch[7], beam_size=config.beam_size)
-				val, equ = compute_prefix_tree_result_infer(test_res, output_lang, test_batch[4])
-				#print(' '.join([input_lang.index2word[i] for i in test_batch[0]]))
-				#print(val, equ)
-				ans, py_eq = convert_eq(val, equ)
-				ans_f, py_eq_f = solve_formula(infer_ls[i]['Question_org'])
-				if ans_f is not None:
-					ans = ans_f
-					py_eq = py_eq_f
-				ans_s, py_eq_s = solve_seq(infer_ls[i]['Question_org'])
-				if ans_s is not None:
-					ans = ans_s
-					py_eq = py_eq_s
+					val, equ = compute_prefix_tree_result_infer(test_res, output_lang, test_batch[4])
+					#print(' '.join([input_lang.index2word[i] for i in test_batch[0]]))
+					#print(val, equ)
+					ans, py_eq = convert_eq(val, equ)
+				except:
+					ans, py_eq = '0', 'print(0)'
+				try:
+					ans_f, py_eq_f = solve_formula(infer_ls[i]['Question_org'])
+					if ans_f is not None:
+						ans = ans_f
+						py_eq = py_eq_f
+				except:
+					pass
+				try:
+					ans_s, py_eq_s = solve_seq(infer_ls[i]['Question_org'])
+					if ans_s is not None:
+						ans = ans_s
+						py_eq = py_eq_s
+				except:
+					pass
+				try:
+					labels = is_label_p(infer_ls[i]['Question_org'])
+					if labels is not None:
+						n_labels = len(labels)
+						ans, py_eq = answer_label(ans, labels)
+				except:
+					pass
+				try:
+					if check_ans(ans, py_eq) is False:
+						print('## check_ans failed ##')
+						ans, py_eq = '0', 'print(0)'
+				except:
+					ans,py_eq = '0', 'print(0)'
+
 				answers[infer_ls[i]['id']] = {
 					"answer": ans,
 					"equation": py_eq
 				}
-				print(infer_ls[i]['Question_org'])
 				print(ans)
 				print(py_eq)
 

@@ -94,6 +94,7 @@ def load_infer_data(path):
     df = pd.DataFrame(columns=['Question', 'Numbers', 'group_nums', 'id'])
     for i, key in enumerate(q_json.keys()):
         q = q_json[key]['question']
+        q = replace_num_words(q)
         q_new = break_punctuate(q)
         q_new = pre_question(q_new)
         nums, q_new = convert_number(q_new)
@@ -416,12 +417,30 @@ def create_ans(sol_dict, num_list, formula, var_list, seq_type, rels):
     if len(num_list) == 1:
         ans = ans1
         py_eq = py_eq1 + 'print(num1)\n'
-        return ans, py_eq
+        return str(ans), py_eq
     ans2, py_eq2 = calc_seq(sol_dict, num_list[1], 'num2', seq_type, rels)
     ans = ans2 - ans1
     py_eq = py_eq1 + py_eq2
     py_eq += 'print(num2-num1)\n'
-    return ans, py_eq
+    return str(ans), py_eq
+
+
+import io, contextlib
+import runpy
+from contextlib import redirect_stdout
+
+def check_ans(ans, py_eq):
+    with open("run_sol.py", "w") as text_file:
+        text_file.write(py_eq)
+
+    with io.StringIO() as buf, redirect_stdout(buf):
+        runpy.run_path(path_name='run_sol.py')
+        output = buf.getvalue()
+    output = output.strip('\n')
+    if output == ans:
+        return True
+    else:
+        return False
 
 
 def seq_proc(seq, num_list, var_list, formula):
@@ -496,6 +515,8 @@ def solve_seq(q):
     if len(var_list) > 0:
         if len(formula_list) == 0:
             return failed
+        if len(var_list) > 2:
+            return failed
         formula = formula_list[-1]
     elif len(num_list) > 0:
         num_list = num_list[-2:]
@@ -507,3 +528,90 @@ def solve_seq(q):
         return seq_proc(seq, num_list, var_list, formula)
     # except:
     # return failed
+
+
+agc_labels_0 = ['남준', '석진', '윤기', '호석', '지민', '태형', '정국', '민영', '유정', '은지', '유나']
+agc_labels_1 = ['(가)', '(나)', '(다)', '(라)', '(마)', '(바)']
+agc_labels_2 = ['흰색', '검정색', '빨간색', '파란색', '노란색', '초록색']
+agc_labels_3 = ['사과', '복숭아', '배', '참외', '감', '귤', '포도', '수박']
+agc_labels_4 = ['오리', '닭', '토끼', '물고기', '고래', '거위', '달팽이', '개구리', '강아지', '고양이', '비둘기', '병아리']
+agc_labels = [agc_labels_0, agc_labels_1, agc_labels_2, agc_labels_3, agc_labels_4]
+
+person_q_tokens = ['누구', '누가']
+label_q_tokens = ['무엇', '어느']
+number_q_tokens = ['몇', '구하시오', '얼마']
+
+number_words = [r'(^|\s)(한)(\s)', r'(^|\s)(두)(\s)', r'(^|\s)(세)(\s)', r'(^|\s)(네)(\s)']
+number_words_c = [r'\g<1>1\3', r'\g<1>2\3', r'\g<1>3\3', r'\g<1>4\3']
+number_words += [r'(^|\s)(하나)', r'(^|\s)둘', r'(^|\s)셋', r'(^|\s)넷']
+number_words_c += [r'\g<1>1', r'\g<1>2', r'\g<1>3', r'\g<1>4']
+number_words += [r'(^|\s)(다섯)', r'(^|\s)여섯', r'(^|\s)일곱', r'(^|\s)여덟']
+number_words_c += [r'\g<1>5', r'\g<1>6', r'\g<1>7', r'\g<1>8']
+number_words += [r'(^|\s)(아홉)', r'(^|\s)열']
+number_words_c += [r'\g<1>9', r'\g<1>10']
+
+def replace_num_words(q):
+    for i, words in enumerate(number_words):
+        q = re.sub(words, number_words_c[i], q)
+    return q
+
+def is_label_p(q):
+    is_number = False
+    for token in number_q_tokens:
+        match = re.findall(token, q)
+        if len(match) > 0:
+            is_number = True
+            break
+    if is_number:
+        return None
+
+    is_person = False
+    is_label = False
+    for token in person_q_tokens:
+        match = re.findall(token, q)
+        if len(match) > 0:
+            is_person = True
+            break
+    for token in label_q_tokens:
+        match = re.findall(token, q)
+        if len(match) > 0:
+            is_label = True
+            break
+    if not is_person and not is_label:
+        return None
+
+    cnts = [0] * len(agc_labels)
+    for i, labels in enumerate(agc_labels):
+        if i == 0 and not is_person:
+            continue
+        if i != 0 and not is_label:
+            continue
+        for token in labels:
+            token_new = token.replace('(', '\\(').replace(')', '\\)')
+            match = re.findall(token_new, q)
+            cnts[i] += len(match)
+    max_cnt = max(cnts)
+    if max_cnt <= 1:
+        return None
+    max_i = cnts.index(max_cnt)
+
+    label_tuples = []
+    for token in agc_labels[max_i]:
+        pos = q.find(token)
+        if (pos == -1):
+            continue
+        label_tuples.append((pos, token))
+    labels = [label for _, label in sorted(label_tuples)]
+    return labels
+
+def answer_label(ans, labels):
+    n = len(labels)
+    ans = int(float(ans))
+    if ans < 0 or ans >= n:
+        ans = 0
+    py_eq = 'labels = ['
+    for label in labels:
+        py_eq += "'"+label+"',"
+    py_eq += ']\n'
+    py_eq += 'print(labels[%i])\n'%ans
+    return labels[ans], py_eq
