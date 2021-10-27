@@ -791,6 +791,7 @@ def main():
 					ans, py_eq = convert_eq(val, equ)
 				except:
 					ans, py_eq = '0', 'print(0)'
+				'''
 				try:
 					ans_f, py_eq_f = solve_formula(infer_ls[i]['Question_org'])
 					if ans_f is not None:
@@ -812,6 +813,7 @@ def main():
 						ans, py_eq = answer_label(ans, labels)
 				except:
 					pass
+				'''
 				try:
 					if check_ans(ans, py_eq) is False:
 						print('## check_ans failed ##')

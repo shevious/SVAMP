@@ -78,7 +78,8 @@ def make_group_num(q):
             if last_num >= 3:
                 break
     '''
-    for i in range(n - 2, -1, -1):
+    # n-1: punctuate(maybe), n-2: last word, n-3: last-1 pos word
+    for i in range(n - 3, -1, -1):
         last_num += 1
         group_num.append(i)
         if last_num >= 3:
