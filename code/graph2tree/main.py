@@ -432,7 +432,8 @@ def main():
 
 		train_ls, dev_ls = load_raw_data(data_path, config.dataset, is_train)
 		if is_infer:
-			infer_ls  = load_infer_data('/home/agc2021/dataset/problemsheet.json')
+			infer_ls  = load_infer_data('/home/agc2021/dataset/problemsheet_5_00.json')
+			#infer_ls  = load_infer_data('/home/agc2021/dataset/problemsheet.json')
 
 		pairs_trained, pairs_tested, generate_nums, copy_nums = transfer_num(train_ls, dev_ls, config.challenge_disp)
 		if is_infer:
@@ -826,7 +827,8 @@ def main():
 				print(py_eq)
 
 			import json
-			json_path = 'answersheet.json'
+			#json_path = 'answersheet.json'
+			json_path = 'answersheet_5_00_shevious.json'
 			with open(json_path, 'w', encoding='UTF-8') as fout:
 				json.dump(answers, fout, ensure_ascii=False, indent=4)
 
