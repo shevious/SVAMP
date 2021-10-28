@@ -89,7 +89,7 @@ def make_group_num(q):
 
 
 def load_infer_data(path):
-    with open(path, "r") as json_file:
+    with open(path, "r", encoding='utf-8-sig') as json_file:
         q_json = json.load(json_file)
     n_question = len(q_json.keys())
     df = pd.DataFrame(columns=['Question', 'Numbers', 'group_nums', 'id'])
@@ -137,16 +137,114 @@ def calc_eq(eq_list):
     else:
         return None
 
-def convert_eq(val, eq_list):
+def check_float_ans(str):
+    s_list = re.findall("소수|분수", str)
+    n = len(s_list)
+    if n > 0 and s_list[n-1] == '소수':
+        return True
+    return False
+
+def fraction_eq():
+    eq = ''
+    eq += '_numerator = _float_self\n'
+    eq += '_denominator = 1.\n'
+    eq += 'max_denominator = 100\n'
+
+    eq += "for _i in range(10):\n"
+    eq += "    if _numerator == int(_numerator):\n"
+    eq += "        break\n"
+    eq += "    _numerator *= 10.\n"
+    eq += "    _denominator *= 10.\n"
+    eq += "\n"
+    eq += "_numerator = int(_numerator)\n"
+    eq += "_denominator = int(_denominator)\n"
+
+    eq += "p0, q0, p1, q1 = 0, 1, 1, 0\n"
+    eq += "n, d = _numerator, _denominator\n"
+    eq += "for _i in range(100):\n"
+    eq += "    a = n//d\n"
+    eq += "    q2 = q0+a*q1\n"
+    eq += "    if q2 > max_denominator:\n"
+    eq += "        break\n"
+    eq += "    p0, q0, p1, q1 = p1, q1, p0+a*p1, q2\n"
+    eq += "    n, d = d, n-a*d\n"
+    eq += "    if d == 0:\n"
+    eq += "        break\n"
+
+    eq += "k = (max_denominator-q0)//q1\n"
+    eq += "bound1 = (p0+k*p1, q0+k*q1)\n"
+    eq += "bound2 = (p1, q1)\n"
+    eq += "if abs(float(bound2[0])/bound2[1] - _float_self) <= abs(float(bound1[0])/bound1[1] - _float_self):\n"
+    eq += "    _numerator, _denominator = bound2\n"
+    eq += "else:\n"
+    eq += "    _numerator, _denominator = bound1\n"
+
+    eq += "if _denominator == 1:\n"
+    eq += "    ans = '%i' % _numerator\n"
+    eq += "else:\n"
+    eq += "    ans = '%i/%i' % (_numerator, _denominator)\n"
+    eq += "print(ans)\n"
+    return eq
+
+def fraction_ans(_float_self):
+    _numerator = _float_self
+    _denominator = 1.
+    max_denominator = 100
+
+    #while True:
+    for _i in range(10):
+        if _numerator == int(_numerator):
+            break
+        _numerator *= 10.
+        _denominator *= 10.
+
+    _numerator = int(_numerator)
+    _denominator = int(_denominator)
+
+    p0, q0, p1, q1 = 0, 1, 1, 0
+    n, d = _numerator, _denominator
+    #while True:
+    for _i in range(100):
+        a = n // d
+        q2 = q0 + a * q1
+        if q2 > max_denominator:
+            break
+        p0, q0, p1, q1 = p1, q1, p0 + a * p1, q2
+        n, d = d, n - a * d
+        if d == 0:
+            break
+
+    k = (max_denominator - q0) // q1
+    bound1 = (p0 + k * p1, q0 + k * q1)
+    bound2 = (p1, q1)
+    if abs(float(bound2[0]) / bound2[1] - _float_self) <= abs(float(bound1[0]) / bound1[1] - _float_self):
+        _numerator, _denominator = bound2
+    else:
+        _numerator, _denominator = bound1
+
+    if _denominator == 1:
+        ans = '%i' % _numerator
+    else:
+        ans = '%i/%i' % (_numerator, _denominator)
+    return ans
+
+def convert_eq(val, eq_list, is_float_ans):
     if val is None:
         ans = "0"
         py_eq = "print(0)"
         return ans, py_eq
     #print(eq_list)
     eq = 'import math\n'
-    eq += "print(('%.2f'%"+calc_eq(eq_list)+").rstrip('0').rstrip('.'))\n"
-    ans = ('%.2f'%val).rstrip('0').rstrip('.')
+    if is_float_ans or val == int(val):
+        eq += "print(('%.2f'%"+calc_eq(eq_list)+").rstrip('0').rstrip('.'))\n"
+        ans = ('%.2f'%val).rstrip('0').rstrip('.')
+        return ans, eq
+    eq += '_float_self = '+calc_eq(eq_list)+'\n'
+    eq += fraction_eq()
+    ans = fraction_ans(val)
     return ans, eq
+
+
 
 
 from sympy import symbols, sympify, linsolve, solve
@@ -542,14 +640,16 @@ person_q_tokens = ['누구', '누가']
 label_q_tokens = ['무엇', '어느']
 number_q_tokens = ['몇', '구하시오', '얼마']
 
-number_words = [r'(^|\s)(한)(\s)', r'(^|\s)(두)(\s)', r'(^|\s)(세)(\s)', r'(^|\s)(네)(\s)']
-number_words_c = [r'\g<1>1\3', r'\g<1>2\3', r'\g<1>3\3', r'\g<1>4\3']
-number_words += [r'(^|\s)(하나)', r'(^|\s)둘', r'(^|\s)셋', r'(^|\s)넷']
-number_words_c += [r'\g<1>1', r'\g<1>2', r'\g<1>3', r'\g<1>4']
-number_words += [r'(^|\s)(다섯)', r'(^|\s)여섯', r'(^|\s)일곱', r'(^|\s)여덟']
-number_words_c += [r'\g<1>5', r'\g<1>6', r'\g<1>7', r'\g<1>8']
-number_words += [r'(^|\s)(아홉)', r'(^|\s)열']
-number_words_c += [r'\g<1>9', r'\g<1>10']
+number_words = []
+number_words_c = []
+#number_words += [r'(^|\s)(한)(\s)', r'(^|\s)(두)(\s)', r'(^|\s)(세)(\s)', r'(^|\s)(네)(\s)']
+#number_words_c += [r'\g<1>1\3', r'\g<1>2\3', r'\g<1>3\3', r'\g<1>4\3']
+#number_words += [r'(^|\s)(하나)', r'(^|\s)둘', r'(^|\s)셋', r'(^|\s)넷']
+#number_words_c += [r'\g<1>1', r'\g<1>2', r'\g<1>3', r'\g<1>4']
+#number_words += [r'(^|\s)(다섯)', r'(^|\s)여섯', r'(^|\s)일곱', r'(^|\s)여덟']
+#number_words_c += [r'\g<1>5', r'\g<1>6', r'\g<1>7', r'\g<1>8']
+#number_words += [r'(^|\s)(아홉)', r'(^|\s)열']
+#number_words_c += [r'\g<1>9', r'\g<1>10']
 
 def replace_num_words(q):
     for i, words in enumerate(number_words):
