@@ -777,7 +777,6 @@ def main():
 
 			answers = {}
 			for i, test_batch in enumerate(infer_pairs):
-				#print(i+1, infer_ls[i]['Question_org'])
 				try:
 					batch_graph = get_single_example_graph(test_batch[0], test_batch[1], test_batch[7], test_batch[4],
 													   test_batch[5])
@@ -800,6 +799,7 @@ def main():
 						py_eq = py_eq_f
 				except:
 					pass
+				'''
 				try:
 					ans_s, py_eq_s = solve_seq(infer_ls[i]['Question_org'])
 					if ans_s is not None:
@@ -807,7 +807,6 @@ def main():
 						py_eq = py_eq_s
 				except:
 					pass
-				'''
 				'''
 				try:
 					labels = is_label_p(infer_ls[i]['Question_org'])
@@ -827,6 +826,7 @@ def main():
 					"answer": ans,
 					"equation": py_eq
 				}
+				#print(i+1, infer_ls[i]['Question_org'])
 				#print(ans)
 				#print(py_eq)
 

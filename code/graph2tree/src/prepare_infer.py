@@ -96,6 +96,7 @@ def load_infer_data(path):
     for i, key in enumerate(q_json.keys()):
         q = q_json[key]['question']
         q = replace_num_words(q)
+        q = replace_polygon_words(q)
         q_new = break_punctuate(q)
         q_new = pre_question(q_new)
         nums, q_new = convert_number(q_new)
@@ -654,6 +655,18 @@ number_words_c = []
 def replace_num_words(q):
     for i, words in enumerate(number_words):
         q = re.sub(words, number_words_c[i], q)
+    return q
+
+polygon_words = []
+polygon_words_c = []
+polygon_words +=   [r'(^|\s)삼각형',  r'(^|\s)사각형',  r'(^|\s)오각형',  r'(^|\s)육각형',  r'(^|\s)팔각형']
+polygon_words_c += [r'\g<1>3 삼각형', r'\g<1>4 사각형', r'\g<1>5 오각형', r'\g<1>6 육각형', r'\g<1>8 팔각형']
+polygon_words +=   [r'(^|\s)정삼각형',  r'(^|\s)정사각형',  r'(^|\s)정오각형',  r'(^|\s)정육각형',  r'(^|\s)정팔각형']
+polygon_words_c += [r'\g<1>3 정삼각형', r'\g<1>4 정사각형', r'\g<1>5 정오각형', r'\g<1>6 정육각형', r'\g<1>8 정팔각형']
+
+def replace_polygon_words(q):
+    for i, words in enumerate(polygon_words):
+        q = re.sub(words, polygon_words_c[i], q)
     return q
 
 def is_label_p(q):
