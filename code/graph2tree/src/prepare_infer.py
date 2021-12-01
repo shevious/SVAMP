@@ -645,12 +645,16 @@ number_words = []
 number_words_c = []
 #number_words += [r'(^|\s)(한)(\s)', r'(^|\s)(두)(\s)', r'(^|\s)(세)(\s)', r'(^|\s)(네)(\s)']
 #number_words_c += [r'\g<1>1\3', r'\g<1>2\3', r'\g<1>3\3', r'\g<1>4\3']
+number_words += [r'(^|\s)(두)(\s)', r'(^|\s)(세)(\s)', r'(^|\s)(네)(\s)']
+number_words_c += [r'\g<1>2\3', r'\g<1>3\3', r'\g<1>4\3']
 #number_words += [r'(^|\s)(하나)', r'(^|\s)둘', r'(^|\s)셋', r'(^|\s)넷']
 #number_words_c += [r'\g<1>1', r'\g<1>2', r'\g<1>3', r'\g<1>4']
-#number_words += [r'(^|\s)(다섯)', r'(^|\s)여섯', r'(^|\s)일곱', r'(^|\s)여덟']
-#number_words_c += [r'\g<1>5', r'\g<1>6', r'\g<1>7', r'\g<1>8']
-#number_words += [r'(^|\s)(아홉)', r'(^|\s)열']
-#number_words_c += [r'\g<1>9', r'\g<1>10']
+number_words += [r'(^|\s)둘[^레]', r'(^|\s)셋', r'(^|\s)넷']
+number_words_c += [r'\g<1>2', r'\g<1>3', r'\g<1>4']
+number_words += [r'(^|\s)(다섯)', r'(^|\s)여섯', r'(^|\s)일곱', r'(^|\s)여덟']
+number_words_c += [r'\g<1>5', r'\g<1>6', r'\g<1>7', r'\g<1>8']
+number_words += [r'(^|\s)(아홉)', r'(^|\s)열']
+number_words_c += [r'\g<1>9', r'\g<1>10']
 
 def replace_num_words(q):
     for i, words in enumerate(number_words):
@@ -668,6 +672,23 @@ def replace_polygon_words(q):
     for i, words in enumerate(polygon_words):
         q = re.sub(words, polygon_words_c[i], q)
     return q
+
+name_seq = r'[^a-zA-Z0-9\s\.\?]+(, [^a-zA-Z0-9\s\.\,\?]+)+'
+josa_tokens = [r'이가$', r'이의$', r'이는$', r'이$', r'가$', r'는$', r'은$', r'의$', r'에$', r'에게$']
+def get_labels_comma(q):
+    match = re.search(name_seq, q)
+    if match is not None:
+        match_list = match.group(0).split(', ')
+        last = len(match_list)-1
+        for j in josa_tokens:
+             match_list[last] = re.sub(j, r'', match_list[last])
+    else:
+        match_list = []
+    return match_list
+
+def test_get_labels_comma():
+    s = '철수, 영희, 영석은 있습니다'
+    print(get_labels_comma(s))
 
 def is_label_p(q):
     is_number = False
@@ -691,36 +712,79 @@ def is_label_p(q):
         if len(match) > 0:
             is_label = True
             break
-    if not is_person and not is_label:
-        return None
+    if is_person or is_label:
+        cnts = [0] * len(agc_labels)
+        for i, labels in enumerate(agc_labels):
+            if i == 0 and not is_person:
+                continue
+            if i != 0 and not is_label:
+                continue
+            for token in labels:
+                token_new = token.replace('(', '\\(').replace(')', '\\)')
+                match = re.findall(token_new, q)
+                cnts[i] += len(match)
+        max_cnt = max(cnts)
+        if max_cnt <= 1:
+            is_person = False
+            is_label = False
+        else:
+            max_i = cnts.index(max_cnt)
 
-    cnts = [0] * len(agc_labels)
-    for i, labels in enumerate(agc_labels):
-        if i == 0 and not is_person:
-            continue
-        if i != 0 and not is_label:
-            continue
-        for token in labels:
-            token_new = token.replace('(', '\\(').replace(')', '\\)')
-            match = re.findall(token_new, q)
-            cnts[i] += len(match)
-    max_cnt = max(cnts)
-    if max_cnt <= 1:
-        return None
-    max_i = cnts.index(max_cnt)
+            label_tuples = []
+            for token in agc_labels[max_i]:
+                pos = q.find(token)
+                if (pos == -1):
+                    continue
+                label_tuples.append((pos, token))
+            labels = [label for _, label in sorted(label_tuples)]
 
-    label_tuples = []
-    for token in agc_labels[max_i]:
-        pos = q.find(token)
-        if (pos == -1):
-            continue
-        label_tuples.append((pos, token))
-    labels = [label for _, label in sorted(label_tuples)]
+    labels_comma = get_labels_comma(q)
+    if (not is_person and not is_label) or len(labels_comma) > len(labels):
+        labels = labels_comma
     return labels
 
-def answer_label(ans, labels):
+def solve_seq_label_q(q, n_labels):
+    exprs = r'(\d)번째'
+    match = re.search(exprs, q)
+    if match is None:
+        order_exprs = [r'첫번째', r'두번째', r'세번째', r'네번째', r'다섯번째']
+        for i, expr in enumerate(order_exprs):
+            match = re.search(expr, q)
+            if match is not None:
+                n = i + 1
+                break
+    else:
+        n = int(match.group(1))
+    if match is None:
+        return None
+    order_expr = r'뒤에서'
+    match = re.search(order_expr, q)
+    if match is None:
+        return n - 1
+    else:
+        return n_labels - n
+
+def test_solve_seq_label_q():
+    s_list = ['5번째', '두번째', '가나다', '뒤에서 첫번째', '뒤에서 2번째']
+    n = 10
+    for s in s_list:
+        ans = solve_seq_label_q(s, n)
+        print(ans)
+
+def answer_label(ans, labels, q_org):
     n = len(labels)
-    ans = int(float(ans))
+
+    ans_new = solve_seq_label_q(q_org, n)
+    if ans_new is not None:
+        ans = ans_new
+    else:
+        if '/' in ans:
+            ans = 0.
+        ans = int(float(ans))
+    if len(labels) == 0:
+        return None, None
+    if len(labels) == 0:
+        return None, None
     if ans < 0 or ans >= n:
         ans = 0
     py_eq = 'labels = ['
@@ -729,3 +793,165 @@ def answer_label(ans, labels):
     py_eq += ']\n'
     py_eq += 'print(labels[%i])\n'%ans
     return labels[ans], py_eq
+
+
+#number_seq = r'\d(\d|\.)+[, (\d(\d|\.)+)]+'
+#number_seq = '\d(\d|\.)+(, \d(\d|\.)+)+'
+number_seq = '(\d|\.)+(, (\d|\.)+)+'
+
+# number_seq = r'(\d)+'
+
+def get_num_seq(q):
+    match = re.search(number_seq, q)
+    if match is not None:
+        match_list = match.group(0).split(', ')
+        is_int = True
+        for i, m in enumerate(match_list):
+            match_list[i] = float(m)
+            if match_list[i] != int(match_list[i]):
+                is_int = False
+        if is_int:
+            for i, m in enumerate(match_list):
+                match_list[i] = int(match_list[i])
+        return match_list, is_int
+    else:
+        match_list = []
+        return match_list, False
+
+
+def get_all_comb(n_list, n_digit, allow_zero):
+    comb_list = []
+    for i in range(len(n_list)):
+        n_sub_list = n_list.copy()
+        d = n_sub_list.pop(i)
+        if d == 0 and not allow_zero:
+            continue
+        if n_digit == 1:
+            comb_list.append(d)
+        else:
+            for c in get_all_comb(n_sub_list, n_digit - 1, True):
+                comb_list.append(d * (10 ** (n_digit - 1)) + c)
+    return comb_list
+
+
+def calc_num_comb(n_list, n_digit, q_type):
+    comb_list = get_all_comb(n_list, n_digit, False)
+    if q_type == 1:
+        ans = max(comb_list)
+    elif q_type == 2:
+        ans = min(comb_list)
+    elif q_type == 3:
+        ans = max(comb_list) + min(comb_list)
+    elif q_type == 5:
+        ans = max(comb_list) - min(comb_list)
+    else:
+        ans = len(comb_list)
+    return ans
+
+
+def eq_num_comb(n_list, n_digit, q_type):
+    eq = ""
+    eq += "def get_all_comb(n_list, n_digit, allow_zero):\n"
+    eq += "    comb_list = []\n"
+    eq += "    for i in range(len(n_list)):\n"
+    eq += "        n_sub_list = n_list.copy()\n"
+    eq += "        d = n_sub_list.pop(i)\n"
+    eq += "        if d == 0 and not allow_zero:\n"
+    eq += "            continue\n"
+    eq += "        if n_digit == 1:\n"
+    eq += "            comb_list.append(d)\n"
+    eq += "        else:\n"
+    eq += "            for c in get_all_comb(n_sub_list, n_digit-1, True):\n"
+    eq += "                comb_list.append(d*(10**(n_digit-1)) + c)\n"
+    eq += "    return comb_list\n"
+    eq += "\n"
+    eq += "def calc_num_comb(n_list, n_digit, q_type):\n"
+    eq += "    comb_list = get_all_comb(n_list, n_digit, False)\n"
+    eq += "    if q_type == 1:\n"
+    eq += "        ans = max(comb_list)\n"
+    eq += "    elif q_type == 2:\n"
+    eq += "        ans = min(comb_list)\n"
+    eq += "    elif q_type == 3:\n"
+    eq += "        ans = max(comb_list) + min(comb_list)\n"
+    eq += "    elif q_type == 5:\n"
+    eq += "        ans = max(comb_list) - min(comb_list)\n"
+    eq += "    else:\n"
+    eq += "        ans = len(comb_list)\n"
+    eq += "    return ans\n"
+    eq += "ans = calc_num_comb(%s, %i, %i)\n" % (n_list, n_digit, q_type)
+    eq += "print(ans)\n"
+    return eq
+
+
+def solve_num_comb(n_list, n_digit, q_type):
+    if n_digit > len(n_list):
+        return None, None
+    ans = calc_num_comb(n_list, n_digit, q_type)
+    return str(ans), eq_num_comb(n_list, n_digit, q_type)
+
+
+# return type: is_num_comb, n_digit, type
+# type = 1: big
+# type = 2: small
+# type = 3: big+small
+# type = 4: all case
+# type = 5: big-small
+
+def check_num_comb(q):
+    digit_exprs = [r'2 자리', r'3 자리', r'4 자리']
+    for i, expr in enumerate(digit_exprs):
+        match = re.search(expr, q)
+        if match is not None:
+            n_digit = i + 2
+            break
+    if match is None:
+        return False, None, None
+    match = re.search(r'\s합[을|은]\s', q)
+    if match is not None:
+        q_type = 3
+    if match is None:
+        match = re.search(r'\s차[를|는]\s', q)
+        if match is not None:
+            q_type = 5
+    if match is None:
+        match = re.search(r'가장 큰', q)
+        if match is not None:
+            q_type = 1
+    if match is None:
+        match = re.search(r'가장 작은', q)
+        if match is not None:
+            q_type = 2
+    if match is None:
+        q_type = 4
+    return True, n_digit, q_type
+
+
+def solve_num_seq(q):
+    n_list, is_int = get_num_seq(q)
+    if len(n_list) < 2:
+        return None, None
+    is_num_comb, n_digit, q_type = check_num_comb(q)
+    # print('is_num_comb =', is_num_comb, 'n_digit = ', n_digit, 'q_type =', q_type)
+    if is_num_comb:
+        return solve_num_comb(n_list, n_digit, q_type)
+    return None, None
+
+def test_solve_num_seq():
+    q_list = []
+    q = '4, 2, 1 중에서 서로 다른 숫자 2개를 뽑아 만들 수 있는 가장 큰 두 자리수를 구하시오.'
+    # q_list.append(q)
+    q = '혹 4, 2, 1 중에서 서로 다른 숫자 2개를 뽑아 만들 수 있는 가장 큰 두 자리수를 구하시오.'
+    # q_list.append(q)
+    # q = '혹 4, 2 중에서 서로 다른 숫자 2개를 뽑아 만들 수 있는 가장 큰 두 자리수를 구하시오.'
+    q = '혹 4, 2, 1 중에서 서로 다른 숫자 2개를 뽑아 만들 수 있는 가장 큰 두 자리수를 구하시오.'
+    q = '5, 4, 2, 1 중에서 서로 다른 숫자 3개를 뽑아 만들 수 있는 가장 큰 세 자리수를 구하시오.'
+    q = '3, 2, 1 중에서 서로 다른 숫자 2개를 뽑아 만들 수 있는 가장 큰 두 자리수를 구하시오.'
+    q_list.append(q)
+    q = '5, 4, 2, 1 중에서 서로 다른 숫자 3개를 뽑아 만들 수 있는 세 자리수 중 가장 큰 수와 가장 작은 수의 합을 구하시오.'
+    q_list.append(q)
+    q = '5, 4, 2, 1 중에서 서로 다른 숫자 3개를 뽑아 만들 수 있는 가장 작은 세 자리수를 구하시오.'
+    q_list.append(q)
+    for s in q_list:
+        # n_list, _ = solve_num_seq(s)
+        ans, py_eq = solve_num_seq(s)
+        print(ans)
