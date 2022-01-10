@@ -21,7 +21,7 @@ from src.utils.helper import *
 from src.utils.logger import *
 from src.utils.expressions_transfer import *
 from src.prepare_infer import load_infer_data, convert_eq, solve_formula, solve_seq, check_ans
-from src.prepare_infer import is_label_p, answer_label, check_float_ans
+from src.prepare_infer import is_label_p, answer_label, check_float_ans, solve_num_seq
 
 global log_folder
 global model_folder
@@ -808,11 +808,18 @@ def main():
 				except:
 					pass
 				'''
+				#if True:
 				try:
 					labels = is_label_p(infer_ls[i]['Question_org'])
 					if labels is not None:
 						n_labels = len(labels)
-						ans, py_eq = answer_label(ans, labels)
+						ans, py_eq = answer_label(ans, labels, infer_ls[i]['Question_org'])
+				except:
+					pass
+				try:
+					ans_s, py_eq_s = solve_num_seq(infer_ls[i]['Question_org'])
+					if ans_s is not None:
+						ans, py_eq = ans_s, py_eq_s
 				except:
 					pass
 				try:
