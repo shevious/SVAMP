@@ -20,8 +20,8 @@ Graph-To-Tree를 이용한 한국어 수학 문장제 자동풀이 모델입니�
 
 #### Dependencies
 
-- compatible with python 3.6
-- dependencies can be installed using `SVAMP/code/requirements.txt`
+- compatible with python 3.7
+- dependencies can be installed using `SVAMP/code/graph2tree/requirements.txt`
 
 #### Setup
 
