@@ -40,10 +40,10 @@ $ source venv/bin/activate
 
 Install all the required packages:
 
-at `SVAMP/code:`
+at `SVAMP/code/graph2tree:`
 
 ```shell
-$ pip install -r requirements.txt
+$ pip install -r requirements.txt -f https://download.pytorch.org/whl/torch_stable.html
 ```
 
 To create the relevant directories, run the following command in the corresponding directory of that model:
@@ -54,7 +54,25 @@ for eg, at `SVAMP/code/graph2tree:`
 $ sh setup.sh
 ```
 
-Then transfer all the data folders to the data subdirectory of that model. For example, copy the MAWPS data directory i.e. `cv_mawps` from `SVAMP/data` to `SVAMP/code/graph2tree/data/`.
+Download the trained weights for MAWPS_ko.
+https://drive.google.com/file/d/1zdmssdZHPqd0LBepDVVvlFwAnn5Q2sCD/view?usp=sharing
+Copy `model.tar.gz` to `SVAMP/code/graph2tree`.
+```shell
+$ tar xvzf model.tar.gz
+```
+
+
+run evaluation for sample MAWPS_ko dataset
+```shell
+$ python main.py -mode test -gpu 0
+```
+
+#### trainig
+
+Prepare mawps compatible dataset.
+```shell
+$ python main.py -mode train -gpu 0
+```
 
 #### Models
 
